@@ -42,7 +42,7 @@ body {
 }
 
 /* ─── Layout ─── */
-.page { max-width: 860px; margin: 0 auto; padding: 80px 24px 160px; }
+.page { max-width: 860px; margin: 0 auto; padding: 80px 24px 160px; overflow-x: hidden; }
 
 section {
   margin-bottom: 120px;
@@ -358,8 +358,9 @@ p strong { color: var(--fg); font-weight: 600; }
 
 /* ─── Exploded View ─── */
 .expl-card {
-  flex: 0 0 auto;
-  width: 160px;
+  flex: 1 1 120px;
+  min-width: 100px;
+  max-width: 200px;
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,0.08);
   background: rgba(255,255,255,0.02);
@@ -493,6 +494,7 @@ p strong { color: var(--fg); font-weight: 600; }
   .layout-reveal-video { width: 160px; }
   .layout-reveal-bg { width: 80px; }
   .example-row { flex-direction: column; }
+  #anchorArrow { display: none; }
 }
 </style>
 </head>
@@ -806,7 +808,7 @@ p strong { color: var(--fg); font-weight: 600; }
     <div style="display: flex; flex-direction: column; align-items: center; margin: 28px 0; position: relative;">
 
       <!-- Preview frame: centered, bigger -->
-      <div style="width: 340px; position: relative;">
+      <div style="width: 100%; max-width: 340px; position: relative;">
         <div id="anchorPhone" style="position: relative; aspect-ratio: 1/1; border-radius: 24px; overflow: hidden; background: linear-gradient(160deg, #0c1b2e, #162a46); border: 2px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
 
           <!-- Text layer: tagline -->
