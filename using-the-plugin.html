@@ -264,43 +264,55 @@ code {
 .cmp-cap { text-align: center; margin-top: 12px; font-size: 12.5px; color: var(--fg-dim); }
 .cmp-cap strong { color: var(--fg); }
 
-/* ─── Animation picker (Step 5) ─── */
-.anim-demo { display: flex; gap: 24px; flex-wrap: wrap; }
-.anim-preview { flex: 1 1 200px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-.anim-frame {
-  width: 100%; max-width: 240px; aspect-ratio: 1/1; border-radius: 14px;
-  background: linear-gradient(160deg, #0c1b2e, #162a46);
-  border: 1px solid rgba(255,255,255,0.07);
-  display: flex; align-items: center; justify-content: center; overflow: hidden;
+/* ─── Step video (Step 1) ─── */
+.video-wrap {
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #08080c;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+  line-height: 0;
 }
-.anim-frame span {
-  font-family: 'Impact', 'Anton', var(--font); font-weight: 800; font-size: 34px;
-  color: #fff; text-transform: uppercase; letter-spacing: 0.02em;
-}
-.anim-selected { font-size: 12px; color: var(--fg-dim); }
-.anim-selected strong { color: var(--green); }
-.anim-list { flex: 1 1 200px; display: flex; flex-direction: column; gap: 8px; }
-.anim-list-label {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--fg-dim); margin-bottom: 2px;
-}
-.anim-opt {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 11px 14px; border-radius: 9px; cursor: pointer;
-  background: rgba(255,255,255,0.03); border: 1px solid var(--card-border);
-  color: var(--fg); font-family: var(--font); font-size: 13px; font-weight: 600;
-  text-align: left; transition: border-color 0.2s ease, background 0.2s ease;
-}
-.anim-opt:hover { border-color: rgba(16,185,129,0.3); }
-.anim-opt .check { opacity: 0; color: var(--green); font-weight: 800; }
-.anim-opt.active { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.4); }
-.anim-opt.active .check { opacity: 1; }
+.video-wrap video { width: 100%; display: block; }
 
-/* Animation keyframes for preview */
-@keyframes a-fade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes a-pop { 0% { opacity: 0; transform: scale(0.4); } 70% { transform: scale(1.12); } 100% { opacity: 1; transform: scale(1); } }
-@keyframes a-slide { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes a-bounce { 0% { opacity: 0; transform: translateY(-60px); } 60% { opacity: 1; transform: translateY(8px); } 80% { transform: translateY(-4px); } 100% { transform: translateY(0); } }
+/* ─── Screenshot frame ─── */
+.shot {
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #08080c;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+  line-height: 0;
+}
+.shot img { width: 100%; display: block; }
+
+/* ─── Two-up screenshots (Step 7) ─── */
+.dual { display: flex; gap: 20px; flex-wrap: wrap; }
+.dual-item { flex: 1 1 240px; min-width: 0; }
+.dual-label {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg);
+}
+.dual-label .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dual-label .dot.green { background: var(--green); box-shadow: 0 0 10px var(--green-glow); }
+.dual-label .dot.salmon { background: var(--salmon); box-shadow: 0 0 10px var(--salmon-glow); }
+
+/* ─── Reference card (Step 2) ─── */
+.ref-card {
+  display: flex; align-items: center; gap: 18px;
+  padding: 20px 22px; border-radius: 14px;
+  background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(16,185,129,0.02));
+  border: 1px solid rgba(16,185,129,0.2);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.ref-card:hover { border-color: rgba(16,185,129,0.45); transform: translateY(-2px); }
+.ref-icon {
+  width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+  display: grid; place-items: center;
+  background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25);
+}
+.ref-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); }
+.ref-title { font-size: 17px; font-weight: 800; color: #fff; line-height: 1.3; }
+.ref-desc { font-size: 13px; color: var(--fg-dim); }
+.ref-arrow { margin-left: auto; font-size: 22px; color: var(--green); flex-shrink: 0; }
 
 /* ─── Separator ─── */
 .sep { height: 1px; background: linear-gradient(90deg, transparent, var(--card-border), transparent); margin: 64px 0; }
@@ -325,20 +337,61 @@ code {
 
   <!-- ─── Hero ─── -->
   <section>
-    <a class="backlink" href="index.html">← What is a Template?</a>
+    <a class="backlink" href="what-is-a-template.html">← What is a Template?</a>
     <div class="hero-badge"><span class="dot"></span> Typpo Figma Plugin</div>
     <h1>Using the Plugin</h1>
-    <p>You've designed your <a href="index.html">template</a> in Figma — layouts, backgrounds, text, and overlays. Now you'll run it through the Typpo plugin to turn it into animated video. Here's the whole flow, step by step.</p>
+    <p>From installing Typpo to rendering your first video — here's the whole flow, step by step. We'll cover getting the plugin, crafting your template in Figma, and running it to turn your design into animated video.</p>
   </section>
 
   <!-- ─── Steps ─── -->
   <div class="steps">
 
-    <!-- Step 1 -->
+    <!-- Step 1: Install -->
     <div class="step">
       <div class="step-rail"><div class="step-num">1</div><div class="step-line"></div></div>
       <div class="step-body">
-        <div class="step-eyebrow">Get started</div>
+        <div class="step-eyebrow">Setup</div>
+        <h2>Install the plugin</h2>
+        <p>Open Figma and find <strong>Typpo</strong> in the Community. Hit <strong>Install</strong>, and it'll be available under <em>Plugins → Typpo</em> in any file you open.</p>
+
+        <div class="diagram">
+          <div class="video-wrap">
+            <video src="videos/how_to_install.MP4" autoplay loop muted playsinline preload="metadata"></video>
+          </div>
+          <div class="caption">Install once from the Figma Community — then run it from the Plugins menu anytime.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Craft template -->
+    <div class="step">
+      <div class="step-rail"><div class="step-num">2</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-eyebrow">Design first</div>
+        <h2>Craft your template</h2>
+        <p>Before running the plugin, build your <strong>template</strong> in Figma — the layouts, backgrounds, text, and overlays that define how your video looks. New to how templates work? Start here:</p>
+
+        <div class="diagram">
+          <a class="ref-card" href="what-is-a-template.html">
+            <div class="ref-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l9 5-9 5-9-5 9-5Z" stroke="#10b981" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 12l9 5 9-5" stroke="#10b981" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 16l9 5 9-5" stroke="#10b981" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div class="ref-eyebrow">Read first</div>
+              <div class="ref-title">What is a Template?</div>
+              <div class="ref-desc">Layouts, backgrounds, anchor text &amp; overlays — the full breakdown.</div>
+            </div>
+            <span class="ref-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-rail"><div class="step-num">3</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-eyebrow">Import</div>
         <h2>Select your frames & run the plugin</h2>
         <p>In Figma, select the <strong>frame</strong> you want to turn into a template — along with any <strong>additional background assets</strong> you want available. Then run the Typpo plugin from <em>Plugins → Typpo</em>. It reads everything in your selection.</p>
 
@@ -365,9 +418,9 @@ code {
       </div>
     </div>
 
-    <!-- Step 2 -->
+    <!-- Step 4 -->
     <div class="step">
-      <div class="step-rail"><div class="step-num">2</div><div class="step-line"></div></div>
+      <div class="step-rail"><div class="step-num">4</div><div class="step-line"></div></div>
       <div class="step-body">
         <div class="step-eyebrow">The canvas</div>
         <h2>Group your backgrounds in <code>bg</code></h2>
@@ -375,59 +428,26 @@ code {
         <p>If it's not in <code>bg</code>, it won't be treated as a background.</p>
 
         <div class="diagram">
-          <div class="layers">
-            <div class="layer">
-              <svg class="ic" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1.5" stroke="#8b8b96" stroke-width="1.3"/></svg>
-              <span class="name">Template Frame</span>
-            </div>
-            <div class="layer indent hl-bg">
-              <svg class="ic" viewBox="0 0 16 16" fill="none"><path d="M2 5.5C2 4.7 2.7 4 3.5 4H6l1.5 1.5h5c.8 0 1.5.7 1.5 1.5v4.5c0 .8-.7 1.5-1.5 1.5h-9C2.7 13 2 12.3 2 11.5v-6Z" stroke="#f59e0b" stroke-width="1.3"/></svg>
-              <span class="name">bg</span>
-              <span class="tail">→ Backgrounds</span>
-            </div>
-            <div class="layer indent2">
-              <svg class="ic" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="#8b8b96" stroke-width="1.3"/><circle cx="6" cy="6.5" r="1.2" stroke="#8b8b96" stroke-width="1.1"/><path d="M3 12l3-3 2.5 2.5L11 8l2 2" stroke="#8b8b96" stroke-width="1.2"/></svg>
-              <span class="name">background-1</span>
-            </div>
-            <div class="layer indent2">
-              <svg class="ic" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="#8b8b96" stroke-width="1.3"/><circle cx="6" cy="6.5" r="1.2" stroke="#8b8b96" stroke-width="1.1"/><path d="M3 12l3-3 2.5 2.5L11 8l2 2" stroke="#8b8b96" stroke-width="1.2"/></svg>
-              <span class="name">background-2</span>
-            </div>
-            <div class="layer indent hl-tx">
-              <svg class="ic" viewBox="0 0 16 16" fill="none"><path d="M4 4h8M8 4v8" stroke="#10b981" stroke-width="1.4" stroke-linecap="round"/></svg>
-              <span class="name">headline-text</span>
-            </div>
+          <div class="shot">
+            <img src="images/bg_setup.png" alt="Figma layers panel showing backgrounds grouped inside a bg group">
           </div>
           <div class="caption">Backgrounds go inside the <code>bg</code> group. Text and overlays stay outside it.</div>
         </div>
       </div>
     </div>
 
-    <!-- Step 3 -->
+    <!-- Step 5 -->
     <div class="step">
-      <div class="step-rail"><div class="step-num">3</div><div class="step-line"></div></div>
+      <div class="step-rail"><div class="step-num">5</div><div class="step-line"></div></div>
       <div class="step-body">
         <div class="step-eyebrow">The layers</div>
         <h2>Keep overlays outside <code>bg</code></h2>
         <p>Overlays — logos, decorations, watermarks — are elements that float <strong>on top</strong> of the background. To be treated as overlays, they must live <strong>outside</strong> the <code>bg</code> group in your layer structure.</p>
-        <p>Overlays can be <span class="scope-badge layout">◆ Layout scope</span> or <span class="scope-badge template">◆ Template scope</span>, and can have entrance &amp; exit animations — see <a href="index.html">What is a Template?</a> for how scope works.</p>
+        <p>Overlays can be <span class="scope-badge layout">◆ Layout scope</span> or <span class="scope-badge template">◆ Template scope</span>, and can have entrance &amp; exit animations — see <a href="what-is-a-template.html">What is a Template?</a> for how scope works.</p>
 
         <div class="diagram">
-          <div class="layers">
-            <div class="layer">
-              <svg class="ic" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1.5" stroke="#8b8b96" stroke-width="1.3"/></svg>
-              <span class="name">Template Frame</span>
-            </div>
-            <div class="layer indent hl-ov">
-              <svg class="ic" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="#ee7f7b" stroke-width="1.3"/><circle cx="6" cy="6.5" r="1.2" stroke="#ee7f7b" stroke-width="1.1"/><path d="M3 12l3-3 2.5 2.5L11 8l2 2" stroke="#ee7f7b" stroke-width="1.2"/></svg>
-              <span class="name">logo-overlay</span>
-              <span class="tail">→ Overlay</span>
-            </div>
-            <div class="layer indent">
-              <svg class="ic" viewBox="0 0 16 16" fill="none"><path d="M2 5.5C2 4.7 2.7 4 3.5 4H6l1.5 1.5h5c.8 0 1.5.7 1.5 1.5v4.5c0 .8-.7 1.5-1.5 1.5h-9C2.7 13 2 12.3 2 11.5v-6Z" stroke="#8b8b96" stroke-width="1.3"/></svg>
-              <span class="name">bg</span>
-              <span class="tail" style="opacity:0.5;">grouped</span>
-            </div>
+          <div class="shot">
+            <img src="images/overlay_setup.png" alt="Figma layers panel showing an overlay layer outside the bg group">
           </div>
 
           <div class="overlay-card">
@@ -441,9 +461,9 @@ code {
       </div>
     </div>
 
-    <!-- Step 4 -->
+    <!-- Step 6 -->
     <div class="step">
-      <div class="step-rail"><div class="step-num">4</div><div class="step-line"></div></div>
+      <div class="step-rail"><div class="step-num">6</div><div class="step-line"></div></div>
       <div class="step-body">
         <div class="step-eyebrow">The safe zone</div>
         <h2>Set the text bounding box</h2>
@@ -476,28 +496,26 @@ code {
       </div>
     </div>
 
-    <!-- Step 5 -->
+    <!-- Step 7 -->
     <div class="step">
-      <div class="step-rail"><div class="step-num">5</div><div class="step-line"></div></div>
+      <div class="step-rail"><div class="step-num">7</div><div class="step-line"></div></div>
       <div class="step-body">
         <div class="step-eyebrow">In the plugin</div>
-        <h2>Choose animations per text</h2>
-        <p>Inside the plugin, <strong>select any text</strong> and you'll be able to pick its <strong>animation</strong> — how it appears on screen as the transcript plays. Each text layer gets its own animation, so you can mix and match across layouts.</p>
+        <h2>Add animations to text &amp; overlays</h2>
+        <p>Inside the plugin, <strong>select any text or overlay</strong> and choose how it animates on screen as the video plays. Each layer gets its own animation, so you can mix and match across your layouts.</p>
 
-        <div class="diagram anim-demo">
-          <div class="anim-preview">
-            <div class="anim-frame"><span id="animWord">HELLO</span></div>
-            <div class="anim-selected">Selected: <strong>headline</strong> text</div>
-          </div>
-          <div class="anim-list">
-            <div class="anim-list-label">Text animation</div>
-            <button class="anim-opt active" data-anim="a-fade">Fade in<span class="check">✓</span></button>
-            <button class="anim-opt" data-anim="a-pop">Pop<span class="check">✓</span></button>
-            <button class="anim-opt" data-anim="a-slide">Slide up<span class="check">✓</span></button>
-            <button class="anim-opt" data-anim="a-bounce">Bounce<span class="check">✓</span></button>
+        <div class="diagram">
+          <div class="dual">
+            <div class="dual-item">
+              <div class="dual-label"><span class="dot green"></span> Text animation</div>
+              <div class="shot"><img src="images/text_animation_example.png" alt="Selecting a text animation in the plugin"></div>
+            </div>
+            <div class="dual-item">
+              <div class="dual-label"><span class="dot salmon"></span> Overlay animation</div>
+              <div class="shot"><img src="images/overlay_animation_example.png" alt="Selecting an overlay animation in the plugin"></div>
+            </div>
           </div>
         </div>
-        <div class="caption">Click an option to preview it. The animations shown here are examples — pick the one you want per text layer in the plugin.</div>
       </div>
     </div>
 
@@ -524,38 +542,21 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 document.querySelectorAll('section, .step').forEach(el => observer.observe(el));
 
-// ─── Animation picker (Step 5) ───
-const animWord = document.getElementById('animWord');
-const animOpts = document.querySelectorAll('.anim-opt');
-
-function playAnim(name) {
-  animWord.style.animation = 'none';
-  // force reflow so the animation can re-trigger
-  void animWord.offsetWidth;
-  animWord.style.animation = name + ' 0.7s cubic-bezier(0.22, 1, 0.36, 1) both';
-}
-
-animOpts.forEach(opt => {
-  opt.addEventListener('click', () => {
-    animOpts.forEach(o => o.classList.remove('active'));
-    opt.classList.add('active');
-    playAnim(opt.dataset.anim);
-  });
-});
-
-// Auto-play the active option once the demo scrolls into view
-const animDemo = document.querySelector('.anim-demo');
-if (animDemo) {
-  const animObserver = new IntersectionObserver(entries => {
+// ─── Play step videos only while in view (restart on re-entry) ───
+document.querySelectorAll('.video-wrap video').forEach(v => {
+  v.pause();
+  const vObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const active = document.querySelector('.anim-opt.active');
-        if (active) playAnim(active.dataset.anim);
+        v.currentTime = 0;
+        v.play().catch(() => {});
+      } else {
+        v.pause();
       }
     });
-  }, { threshold: 0.5 });
-  animObserver.observe(animDemo);
-}
+  }, { threshold: 0.4 });
+  vObserver.observe(v);
+});
 </script>
 </body>
 </html>

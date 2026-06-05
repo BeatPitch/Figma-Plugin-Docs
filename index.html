@@ -3,1361 +3,284 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>What is a Typpo Template?</title>
+<title>Welcome to Typpo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
+/* ─── Typpo design tokens (from typpo.css) ─── */
 :root {
-  --bg: #040406;
-  --fg: #e8e8ec;
-  --fg-dim: #8b8b96;
-  --green: #10b981;
-  --green-glow: rgba(16, 185, 129, 0.25);
-  --green-dim: rgba(16, 185, 129, 0.08);
-  --purple: #8b5cf6;
-  --purple-glow: rgba(139, 92, 246, 0.2);
-  --blue: #3b82f6;
-  --blue-glow: rgba(59, 130, 246, 0.2);
-  --orange: #f59e0b;
-  --orange-glow: rgba(245, 158, 11, 0.2);
-  --salmon: #ee7f7b;
-  --salmon-glow: rgba(238, 127, 123, 0.2);
-  --card: rgba(255, 255, 255, 0.03);
-  --card-border: rgba(255, 255, 255, 0.06);
-  --font: "Montserrat", -apple-system, system-ui, sans-serif;
-  --r: 16px;
+  --salmon: #EE7F7B;
+  --fg-on-dark: #FFFFFF;
+  --fg-unselected: #A4A496;
+  --bg-card-dark: #1D1D1D;
+  --card-border: #2A2A2C;
+  --font-app: "Major Mono Display", ui-monospace, monospace;
+  --font-display: "Montserrat", -apple-system, "SF Pro", system-ui, sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font);
+html, body {
+  background: #0E0E10;
+  color: var(--fg-on-dark);
+  font-family: var(--font-display);
   -webkit-font-smoothing: antialiased;
-  line-height: 1.6;
 }
 
-/* ─── Layout ─── */
-.page { max-width: 860px; margin: 0 auto; padding: 80px 24px 160px; overflow-x: hidden; }
-
-section {
-  margin-bottom: 120px;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-section.visible {
-  opacity: 1;
-  transform: translateY(0);
+/* B · Dark cinematic — deep black radial glow */
+body {
+  min-height: 100vh;
+  background: radial-gradient(900px 600px at 50% 20%, #2A2A2C 0%, #0E0E10 65%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 56px;
+  overflow-x: hidden;
 }
 
-/* ─── Typography ─── */
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--green); margin-bottom: 24px;
-}
-.hero-badge .dot {
-  width: 8px; height: 8px; border-radius: 50%; background: var(--green);
-  box-shadow: 0 0 12px var(--green-glow);
-}
-h1 {
-  font-size: clamp(36px, 6vw, 56px); font-weight: 800; letter-spacing: -0.03em;
-  line-height: 1.1; margin-bottom: 20px;
-  background: linear-gradient(135deg, #fff 0%, #b0b0b8 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-h2 {
-  font-size: clamp(24px, 4vw, 32px); font-weight: 700; letter-spacing: -0.02em;
-  line-height: 1.2; margin-bottom: 16px; color: #fff;
-}
-h3 {
-  font-size: 14px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-  margin-bottom: 12px;
-}
-p { color: var(--fg-dim); font-size: 16px; max-width: 600px; margin-bottom: 16px; }
-p strong { color: var(--fg); font-weight: 600; }
-
-/* ─── Diagram cards ─── */
-.diagram {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: var(--r);
-  padding: 32px;
-  margin-top: 32px;
+.welcome {
+  width: 100%;
+  max-width: 988px;
+  margin: 0 auto;
   position: relative;
-  overflow: hidden;
 }
-.diagram::before {
-  content: "";
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 30% 20%, rgba(16, 185, 129, 0.04), transparent 60%);
+
+/* ─── Hero ─── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+/* Big salmon glow behind the logos */
+.glow {
+  position: absolute;
+  width: 460px;
+  height: 220px;
+  top: -6%;
+  background: radial-gradient(ellipse at center, rgba(238,127,123,0.18) 0%, transparent 70%);
+  filter: blur(6px);
   pointer-events: none;
 }
 
-/* ─── Template container diagram ─── */
-.template-box {
-  border: 2px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  padding: 20px;
-  position: relative;
-}
-.template-box .label {
-  position: absolute; top: -11px; left: 16px;
-  background: var(--bg); padding: 0 8px;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--fg-dim);
-}
-
-/* ─── Layout blocks ─── */
-.layout-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
-
-.layout-block {
-  flex: 1; min-width: 180px;
-  border-radius: 10px; padding: 16px;
-  position: relative; overflow: hidden;
-}
-.layout-block.a {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0.04));
-  border: 1px solid rgba(16, 185, 129, 0.2);
-}
-.layout-block.b {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(139, 92, 246, 0.04));
-  border: 1px solid rgba(139, 92, 246, 0.2);
-}
-.layout-block .layout-label {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-  margin-bottom: 12px;
-}
-.layout-block.a .layout-label { color: var(--green); }
-.layout-block.b .layout-label { color: var(--purple); }
-
-.prop-list { list-style: none; }
-.prop-list li {
-  font-size: 13px; color: var(--fg-dim); padding: 3px 0;
-  display: flex; align-items: center; gap: 8px;
-}
-.prop-list .val { color: var(--fg); font-weight: 500; font-family: "SF Mono", "Fira Code", monospace; font-size: 12px; }
-
-/* ─── Background strips ─── */
-.bg-strip {
-  display: flex; gap: 8px; margin-top: 12px;
-}
-.bg-swatch {
-  height: 32px; flex: 1; border-radius: 6px;
-  position: relative; overflow: hidden;
-}
-.bg-swatch::after {
-  content: attr(data-label);
-  position: absolute; bottom: 4px; left: 6px;
-  font-size: 9px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
-  color: rgba(255,255,255,0.6);
-}
-
-/* ─── Scope badges ─── */
-.scope-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 4px 10px; border-radius: 6px;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-}
-.scope-badge.template {
-  background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); color: var(--orange);
-}
-.scope-badge.layout {
-  background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.25); color: var(--blue);
-}
-
-/* ─── Animated overlay demo ─── */
-.overlay-demo {
-  display: flex; gap: 16px; margin-top: 20px;
-}
-.overlay-demo .phone {
-  width: 140px; height: 248px; border-radius: 16px;
-  background: #0a0a0e; border: 1px solid rgba(255,255,255,0.1);
-  position: relative; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-}
-.overlay-demo .phone .bg-cycle {
-  position: absolute; inset: 0;
-}
-.overlay-demo .phone .bg-cycle .bg-frame {
-  position: absolute; inset: 0; border-radius: 16px;
-}
-.overlay-demo .phone .overlay-el {
-  position: absolute; bottom: 12px; right: 12px;
-  width: 28px; height: 28px; border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 800;
-}
-.overlay-demo .phone .anchor-text {
-  position: relative; z-index: 2;
-  font-size: 16px; font-weight: 800; letter-spacing: -0.02em;
-  text-align: center; padding: 0 12px;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.5);
-}
-.overlay-demo .phone-label {
-  text-align: center; margin-top: 8px;
-  font-size: 11px; font-weight: 600; color: var(--fg-dim); letter-spacing: 0.04em;
-}
-.overlay-demo .phone-group { display: flex; flex-direction: column; align-items: center; }
-
-/* ─── Animated cycling backgrounds ─── */
-@keyframes cycle3 {
-  0%, 30%   { opacity: 1; }
-  33%, 63%  { opacity: 0; }
-  66%, 96%  { opacity: 0; }
-  100%      { opacity: 1; }
-}
-@keyframes cycle3b {
-  0%, 30%   { opacity: 0; }
-  33%, 63%  { opacity: 1; }
-  66%, 96%  { opacity: 0; }
-  100%      { opacity: 0; }
-}
-@keyframes cycle3c {
-  0%, 30%   { opacity: 0; }
-  33%, 63%  { opacity: 0; }
-  66%, 96%  { opacity: 1; }
-  100%      { opacity: 0; }
-}
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 12px var(--green-glow); }
-  50%      { box-shadow: 0 0 24px var(--green-glow), 0 0 48px rgba(16,185,129,0.1); }
-}
-@keyframes text-swap {
-  0%, 30%   { content: "HELLO WORLD"; }
-  33%, 63%  { content: "JOIN US TODAY"; }
-  66%, 100% { content: "DON'T MISS OUT"; }
-}
-.phone .anchor-text.animated {
-  animation: fade-words 6s infinite;
-}
-@keyframes fade-words {
-  0%, 28%   { opacity: 1; }
-  30%, 32%  { opacity: 0; }
-  34%, 61%  { opacity: 1; }
-  63%, 65%  { opacity: 0; }
-  67%, 94%  { opacity: 1; }
-  96%, 100% { opacity: 0; }
-}
-
-/* ─── Anchor text highlight ─── */
-.anchor-highlight {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 8px 14px; border-radius: 8px;
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px dashed rgba(16, 185, 129, 0.3);
-  font-size: 14px; font-weight: 600; color: var(--green);
-  animation: pulse-glow 3s infinite;
-}
-.anchor-highlight .arrow { font-size: 18px; }
-
-/* ─── Separator ─── */
-.sep {
-  height: 1px; background: linear-gradient(90deg, transparent, var(--card-border), transparent);
-  margin: 80px 0;
-}
-
-/* ─── Layout Reveal Animation ─── */
-.layout-reveal {
-  position: relative;
+/* Logo handoff — Figma → typpo */
+.logos {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  min-height: 500px;
-}
-.layout-reveal-video {
+  gap: 20px;
+  margin-bottom: 30px;
   position: relative;
-  width: 220px;
-  aspect-ratio: 9 / 16;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08);
-  z-index: 10;
-  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 1s ease;
 }
-.layout-reveal.is-revealed .layout-reveal-video {
-  transform: translateY(-60px) scale(0.72);
-  box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 40px rgba(16,185,129,0.15), 0 0 0 2px rgba(16,185,129,0.3);
-}
-.layout-reveal-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: var(--green);
-  color: #040406;
-  font-size: 12px;
-  font-weight: 800;
-  padding: 5px 12px;
-  border-radius: 8px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  opacity: 0;
-  transform: scale(0.3) rotate(-10deg);
-  transition: opacity 0.5s ease 0.8s, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s;
-  box-shadow: 0 4px 16px rgba(16,185,129,0.4);
-}
-.layout-reveal.is-revealed .layout-reveal-badge {
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
-}
-.layout-reveal-bgs {
-  display: flex;
-  gap: 14px;
-  margin-top: -10px;
-  z-index: 5;
-  perspective: 1000px;
-}
-.layout-reveal-bg {
-  width: 120px;
-  aspect-ratio: 9 / 16;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-  position: relative;
-  opacity: 0;
-  transform: translateY(80px) scale(0.6) rotateX(15deg);
-  transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.8s ease;
-  transition-delay: calc(0.5s + var(--i) * 0.12s);
-}
-.layout-reveal.is-revealed .layout-reveal-bg {
-  opacity: 1;
-  transform: translateY(0) scale(1) rotateX(0deg);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
-}
-.layout-reveal-bg:hover {
-  transform: translateY(-4px) scale(1.04);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.6), 0 0 20px rgba(16,185,129,0.15);
-}
-.layout-reveal-bg img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.logos img {
+  width: 104px;
+  height: 104px;
   display: block;
+  border-radius: 22px;
+  box-shadow: 0 18px 40px -16px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.06);
 }
-.layout-reveal-bg span {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 6px 0;
-  text-align: center;
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--fg);
-  background: linear-gradient(transparent, rgba(0,0,0,0.7));
-  letter-spacing: 0.06em;
+.arrow { display: block; overflow: visible; }
+
+/* Eyebrow — Montserrat SemiBold, tracked caps (legibility edit) */
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: var(--salmon);
   text-transform: uppercase;
 }
 
-
-/* ─── Exploded View ─── */
-.expl-card {
-  flex: 1 1 120px;
-  min-width: 100px;
-  max-width: 200px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.02);
-  overflow: hidden;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border-color 0.3s ease;
-}
-.expl-card:hover {
-  border-color: var(--card-color, rgba(255,255,255,0.15));
-}
-.expl-card-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 14px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--fg-dim);
+/* Headline — Major Mono, giant spaced caps */
+.headline {
+  font-family: var(--font-app);
+  font-weight: 400;
+  font-size: clamp(56px, 11vw, 100px);
+  line-height: 0.94;
+  color: #fff;
+  margin-top: 14px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-.expl-card-preview {
-  aspect-ratio: 1/1;
+
+.lede {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--fg-unselected);
+  max-width: 520px;
+  line-height: 1.55;
+}
+
+/* ─── Cards ─── */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 40px;
   position: relative;
 }
-.expl-label-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.expl-plus {
-  display: flex;
-  align-items: center;
-  font-size: 22px;
-  font-weight: 300;
-  color: rgba(255,255,255,0.15);
-  padding-top: 40px;
-  transition: opacity 0.4s ease;
-}
-.expl-composite {
-  border-color: rgba(16, 185, 129, 0.2);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(16,185,129,0.08);
-}
-/* Hover the composite → ingredient cards lift and glow */
-.expl-composite:hover ~ .expl-card { transform: translateY(-4px); }
-#explodedRow:has(.expl-composite:hover) .expl-card:not(.expl-composite) {
-  transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.5);
-  border-color: var(--card-color, rgba(255,255,255,0.2));
-}
-#explodedRow:has(.expl-composite:hover) .expl-plus {
-  color: rgba(255,255,255,0.4);
-}
-/* ─── Script Picker Cards ─── */
-.script-card {
-  appearance: none;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.02);
-  border-radius: 14px;
-  padding: 14px 16px;
-  min-width: 200px;
-  max-width: 240px;
-  flex-shrink: 0;
-  cursor: pointer;
-  text-align: left;
-  color: var(--fg-dim);
-  transition: border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
-}
-.script-card:hover {
-  border-color: rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.04);
-  transform: translateY(-2px);
-}
-.script-card.active {
-  border-color: var(--green);
-  background: rgba(16,185,129,0.06);
-  box-shadow: 0 0 16px rgba(16,185,129,0.1);
-}
-.script-card-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--fg);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-.script-card.active .script-card-title { color: var(--green); }
-.script-card-scenes {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+
+.card {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-size: 12px;
-  line-height: 1.4;
-  counter-reset: scene;
-}
-.script-card-scenes li {
-  counter-increment: scene;
-  padding-left: 18px;
+  gap: 10px;
+  background: var(--bg-card-dark);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  text-decoration: none;
+  color: #fff;
+  transition: border-color 0.15s ease, background 0.15s ease;
   position: relative;
+  overflow: hidden;
 }
-.script-card-scenes li::before {
-  content: counter(scene);
-  position: absolute;
-  left: 0;
-  font-size: 9px;
+.card:hover { border-color: var(--salmon); background: #222; }
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-num {
+  font-family: var(--font-app);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--salmon);
+  text-transform: uppercase;
+}
+.card-cat {
+  font-family: var(--font-app);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.card-title {
+  font-family: var(--font-display);
   font-weight: 700;
-  color: var(--fg-dim);
-  background: rgba(255,255,255,0.06);
-  width: 14px;
-  height: 14px;
-  border-radius: 4px;
+  font-size: 17px;
+  color: #fff;
+  margin-top: 2px;
+}
+.card-body {
+  font-size: 13px;
+  color: var(--fg-unselected);
+  line-height: 1.5;
+}
+
+.card-foot {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--card-border);
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-foot .chev {
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  background: var(--salmon);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 1px;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.3); }
+  font-size: 13px;
+  flex-shrink: 0;
 }
 
 /* ─── Responsive ─── */
-@media (max-width: 600px) {
-  .layout-row { flex-direction: column; }
-  .overlay-demo { flex-wrap: wrap; justify-content: center; }
-  .layout-reveal-video { width: 160px; }
-  .layout-reveal-bg { width: 80px; }
-  .example-row { flex-direction: column; }
-  #anchorArrow { display: none; }
+@media (max-width: 720px) {
+  body { padding: 40px 22px; }
+  .cards { grid-template-columns: 1fr; }
+  .logos img { width: 84px; height: 84px; }
+  .glow { width: 320px; }
 }
 </style>
 </head>
 <body>
-<div class="page">
 
-  <!-- ─── Hero ─── -->
-  <section>
-    <div class="hero-badge"><span class="dot"></span> Typpo Figma Plugin</div>
-    <h1>What is a Template?</h1>
-    <p>A template is the blueprint that turns your Figma designs into animated video. It defines <strong>how text appears</strong>, <strong>what backgrounds cycle</strong>, and <strong>which overlays persist</strong> — all composed from your Figma frames.</p>
-    <p style="margin-top: 16px;">Once you've built a template, you can <strong>reuse it endlessly</strong> — just swap the script and Typpo renders a fresh video with the same design. New script, same look, instant video. Or use the plugin as a <strong>one-off</strong> to bring a single Figma design to life.</p>
+  <main class="welcome">
 
-    <!-- ─── Reuse Demo: Figma board → video → script picker ─── -->
-    <div style="margin-top: 40px;">
+    <!-- ─── Hero ─── -->
+    <section class="hero">
+      <div class="glow"></div>
 
-      <!-- Banner: Figma board overview -->
-      <div style="border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 24px;">
-        <img id="figmaBoardBanner" src="images/figma-board-banner.png" alt="Figma board showing all template layouts" style="width: 100%; display: block;">
-        <div style="padding: 10px 16px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: var(--fg-dim);">Your Figma board — 5 layouts + intro & outro</div>
+      <!-- Figma → typpo handoff -->
+      <div class="logos">
+        <img src="images/figma-logo.png" alt="Figma" width="104" height="104">
+        <svg class="arrow" width="140" height="56" viewBox="0 0 140 56" aria-hidden="true">
+          <defs>
+            <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 z" fill="#EE7F7B"></path>
+            </marker>
+          </defs>
+          <path d="M 6 28 C 49 5.6, 91 5.6, 130 28"
+                fill="none" stroke="#EE7F7B" stroke-width="2.2" stroke-linecap="round"
+                stroke-dasharray="4 4" marker-end="url(#arrowhead)"></path>
+        </svg>
+        <img src="images/typpo-logo.png" alt="typpo" width="104" height="104">
       </div>
 
-      <!-- Video player: all videos preloaded, stacked, crossfade on switch -->
-      <div style="max-width: 400px; margin: 0 auto 20px;">
-        <div id="scriptVideoContainer" style="position: relative; border-radius: 20px; overflow: hidden; border: 2px solid rgba(255,255,255,0.08); box-shadow: 0 16px 48px rgba(0,0,0,0.4);">
-          <video class="script-vid" data-script="1" src="videos/script-1.mov" loop muted playsinline preload="auto" style="width: 100%; display: block; transition: opacity 0.4s ease;"></video>
-          <video class="script-vid" data-script="2" src="videos/script-2.mov" loop muted playsinline preload="auto" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease;"></video>
-          <video class="script-vid" data-script="3" src="videos/script-3.mov" loop muted playsinline preload="auto" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease;"></video>
-          <video class="script-vid" data-script="4" src="videos/script-4.mov" loop muted playsinline preload="auto" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease;"></video>
+      <div class="eyebrow">figma &times; typpo</div>
+      <h1 class="headline">installed.</h1>
+      <p class="lede">Your captions live where your designs do now. Three short reads to get the first clip out the door.</p>
+    </section>
+
+    <!-- ─── Cards ─── -->
+    <section class="cards">
+
+      <a class="card" href="what-is-a-template.html">
+        <div class="card-top">
+          <span class="card-num">01</span>
+          <span class="card-cat">concept</span>
         </div>
-      </div>
-
-      <!-- Script picker: horizontal scroll -->
-      <div style="margin-top: 20px;">
-        <div style="font-size: 11px; font-weight: 600; color: var(--fg-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;">Swap the script — same template, different video</div>
-        <div style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
-
-          <!-- Script 1 -->
-          <button class="script-card active" data-script="1" data-video="videos/script-1.mov" type="button" style="scroll-snap-align: start;">
-            <div class="script-card-title">Script 1</div>
-            <ol class="script-card-scenes">
-              <li>Come out to Los Angeles</li>
-              <li>Enjoy the strikes</li>
-              <li>Soak in the sun</li>
-              <li>West coast aka the best coast</li>
-              <li>See you here</li>
-            </ol>
-          </button>
-
-          <!-- Script 2 -->
-          <button class="script-card" data-script="2" data-video="videos/script-2.mov" type="button" style="scroll-snap-align: start;">
-            <div class="script-card-title">Script 2</div>
-            <ol class="script-card-scenes">
-              <li>Pack your bags today</li>
-              <li>Head to the west side</li>
-              <li>Feel the ocean breeze</li>
-              <li>Live your best life here</li>
-              <li>Welcome to LA</li>
-            </ol>
-          </button>
-
-          <!-- Script 3 -->
-          <button class="script-card" data-script="3" data-video="videos/script-3.mov" type="button" style="scroll-snap-align: start;">
-            <div class="script-card-title">Script 3</div>
-            <ol class="script-card-scenes">
-              <li>California is calling</li>
-              <li>Chase the golden sunsets</li>
-              <li>Surf waves every morning</li>
-              <li>Palm trees and good vibes</li>
-              <li>Make LA your home</li>
-            </ol>
-          </button>
-
-          <!-- Script 4 -->
-          <button class="script-card" data-script="4" data-video="videos/script-4.mov" type="button" style="scroll-snap-align: start;">
-            <div class="script-card-title">Script 4</div>
-            <ol class="script-card-scenes">
-              <li>Leave the cold behind</li>
-              <li>Endless summer awaits</li>
-              <li>Tacos on every corner</li>
-              <li>The city of angels</li>
-              <li>Start fresh in LA</li>
-            </ol>
-          </button>
-
+        <div class="card-title">What is a template?</div>
+        <p class="card-body">A text style + animation + background, bundled. Pick one, tweak it, ship a clip in under a minute.</p>
+        <div class="card-foot">
+          <span>Read the primer</span>
+          <span class="chev">&rarr;</span>
         </div>
-      </div>
+      </a>
 
-    </div>
-  </section>
-
-  <div class="sep"></div>
-
-  <!-- ─── Text Layouts ─── -->
-  <section>
-    <h3 style="color: var(--green);">The Foundation</h3>
-    <h2>Text Layouts</h2>
-    <p>Every template is made of one or more <strong>text layouts</strong>. A layout defines the visual skeleton for your text — font, size, color, position, and alignment. When your transcript plays, each group of words is rendered using the next available layout.</p>
-    <p>If your template has <strong>one layout</strong>, every scene uses it. If it has <strong>multiple layouts</strong>, they cycle based on the template's rules.</p>
-
-    <div class="diagram">
-      <div class="template-box">
-        <span class="label">Template</span>
-        <div class="layout-row">
-          <!-- Layout 1: visual preview + properties -->
-          <div class="layout-block a" style="padding: 0; overflow: hidden;">
-            <div class="layout-label" style="padding: 16px 20px 0;">Layout 1</div>
-            <!-- Live preview -->
-            <div style="position: relative; border: 1px dashed rgba(255,255,255,0.15); margin: 12px 16px; border-radius: 12px; aspect-ratio: 1/1; display: flex; align-items: flex-start; justify-content: center; padding-top: 40px;">
-              <div id="layout1Text" style="font-family: 'Impact', 'Anton', sans-serif; font-size: 28px; color: #ffffff; text-align: center; text-transform: uppercase; line-height: 1.15; letter-spacing: 0.02em;">
-                <span class="l1-word" style="opacity:0; display:inline-block;">WHETHER</span><br>
-                <span class="l1-word" style="opacity:0; display:inline-block;">WE RIDE</span><br>
-                <span class="l1-word" style="opacity:0; display:inline-block;">THEM</span>
-              </div>
-            </div>
-            <!-- Properties -->
-            <ul class="prop-list" style="padding: 8px 20px 16px;">
-              <li>Font <span class="val">Impact</span></li>
-              <li>Size <span class="val">128px</span></li>
-              <li>Color <span class="val" style="color:#fff;">■ White</span></li>
-              <li>Align <span class="val">Center / Top</span></li>
-            </ul>
-          </div>
-          <!-- Layout 2: visual preview + properties -->
-          <div class="layout-block b" style="padding: 0; overflow: hidden;">
-            <div class="layout-label" style="padding: 16px 20px 0;">Layout 2</div>
-            <!-- Live preview -->
-            <div style="position: relative; border: 1px dashed rgba(255,255,255,0.15); margin: 12px 16px; border-radius: 12px; aspect-ratio: 1/1; display: flex; align-items: flex-end; justify-content: flex-start; padding: 20px;">
-              <div id="layout2Text" style="font-family: 'Impact', 'Anton', sans-serif; font-size: 24px; color: #10b981; text-align: left; text-transform: uppercase; line-height: 1.15; letter-spacing: 0.02em;">
-                <span class="l2-word" style="opacity:0; display:inline-block; transform:scale(0.7);">OR IF WE</span><br>
-                <span class="l2-word" style="opacity:0; display:inline-block; transform:scale(0.7);">JUMP</span><br>
-                <span class="l2-word" style="opacity:0; display:inline-block; transform:scale(0.7);">THEM</span>
-              </div>
-            </div>
-            <!-- Properties -->
-            <ul class="prop-list" style="padding: 8px 20px 16px;">
-              <li>Font <span class="val">Impact</span></li>
-              <li>Size <span class="val">100px</span></li>
-              <li>Color <span class="val" style="color:#10b981;">■ Green</span></li>
-              <li>Align <span class="val">Left / Bottom</span></li>
-            </ul>
-          </div>
+      <a class="card" href="#">
+        <div class="card-top">
+          <span class="card-num">02</span>
+          <span class="card-cat">auth</span>
         </div>
-      </div>
-    </div>
-
-    <!-- Same-layout example: thumbnails left (bigger), explanation right (smaller) -->
-    <div class="example-row" style="display: flex; gap: 24px; margin-top: 28px; align-items: flex-start;">
-      <div style="display: flex; gap: 8px; flex: 3; min-width: 0;">
-        <div style="flex: 1; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); position: relative;">
-          <img src="images/same-layout-1.png" alt="Frame 1" style="width: 100%; display: block;">
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 5px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); font-size: 9px; color: var(--fg-dim);">Frame 1</div>
+        <div class="card-title">Sign in to typpo</div>
+        <p class="card-body">Keep credits and projects in sync across devices. Sign in with Apple or Google.</p>
+        <div class="card-foot">
+          <span>Open sign-in guide</span>
+          <span class="chev">&rarr;</span>
         </div>
-        <div style="flex: 1; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); position: relative;">
-          <img src="images/same-layout-2.png" alt="Frame 2" style="width: 100%; display: block;">
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 5px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); font-size: 9px; color: var(--fg-dim);">Frame 2</div>
+      </a>
+
+      <a class="card" href="using-the-plugin.html">
+        <div class="card-top">
+          <span class="card-num">03</span>
+          <span class="card-cat">setup</span>
         </div>
-      </div>
-      <div style="flex: 2; min-width: 160px;">
-        <h3 style="color: var(--green); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin: 0 0 8px;">Same Layout</h3>
-        <p style="font-size: 13px; color: var(--fg-dim); margin: 0 0 10px;">These two frames have <strong style="color: var(--fg);">identical text styling</strong> — same font, size, color, and position. Only the words and background differ.</p>
-        <div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--green-dim); border-radius: 8px; border: 1px solid rgba(16,185,129,0.15); font-size: 12px;">
-          <span>→</span>
-          <span><strong style="color: var(--green);">1 layout</strong> · 2 backgrounds that alternate</span>
+        <div class="card-title">Finish installing</div>
+        <p class="card-body">Pin the plug-in, grant clipboard access, and you're set. Three quick steps.</p>
+        <div class="card-foot">
+          <span>Show me how</span>
+          <span class="chev">&rarr;</span>
         </div>
-      </div>
-    </div>
+      </a>
 
-    <!-- Hidden video reveal (will move later) -->
-    <div style="display: none;">
-      <div class="layout-reveal" id="layoutReveal">
-        <div class="layout-reveal-video" id="revealVideo">
-          <video src="videos/train-9x16.mp4" loop muted playsinline data-sync-video style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;"></video>
-          <div class="layout-reveal-badge">1 Layout</div>
-        </div>
-        <div class="layout-reveal-bgs" id="revealBgs">
-          <div class="layout-reveal-bg" style="--i:0"><img src="images/train0.png" alt="BG 1"><span>BG 1</span></div>
-          <div class="layout-reveal-bg" style="--i:1"><img src="images/train1.png" alt="BG 2"><span>BG 2</span></div>
-          <div class="layout-reveal-bg" style="--i:2"><img src="images/train2.png" alt="BG 3"><span>BG 3</span></div>
-          <div class="layout-reveal-bg" style="--i:3"><img src="images/train3.png" alt="BG 4"><span>BG 4</span></div>
-        </div>
-      </div>
-    </div>
+    </section>
 
-    <p style="margin-top: 20px; font-size: 13px; color: var(--fg-dim);">
-      <strong style="color: var(--fg);">What makes them different?</strong> Same styling + different words = one layout. Change any style property = separate layout.
-    </p>
+  </main>
 
-    <!-- Different-layout example: thumbnails left (bigger), explanation right (smaller) -->
-    <div class="example-row" style="display: flex; gap: 24px; margin-top: 20px; align-items: flex-start;">
-      <div style="display: flex; gap: 8px; flex: 3; min-width: 0;">
-        <div style="flex: 1; border-radius: 12px; overflow: hidden; border: 1px solid rgba(139,92,246,0.2); position: relative; background: #000;">
-          <img src="images/diff-layout-1.png" alt="Layout 1" style="width: 100%; display: block;">
-          <div style="position: absolute; top: 6px; left: 6px; background: var(--purple); color: #fff; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">L1</div>
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 4px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); font-size: 9px; color: var(--fg-dim);">Bottom-left</div>
-        </div>
-        <div style="flex: 1; border-radius: 12px; overflow: hidden; border: 1px solid rgba(139,92,246,0.2); position: relative; background: #000;">
-          <img src="images/diff-layout-2.png" alt="Layout 2" style="width: 100%; display: block;">
-          <div style="position: absolute; top: 6px; left: 6px; background: var(--purple); color: #fff; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">L2</div>
-          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 4px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); font-size: 9px; color: var(--fg-dim);">Top-left</div>
-        </div>
-      </div>
-      <div style="flex: 2; min-width: 160px;">
-        <h3 style="color: var(--purple); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin: 0 0 8px;">Different Layouts</h3>
-        <p style="font-size: 13px; color: var(--fg-dim); margin: 0 0 10px;">Same font, but the <strong style="color: var(--fg);">position is different</strong>. Layout 1 places text bottom-left; Layout 2 places it top-left. Any style change makes it a separate layout.</p>
-        <div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--purple-glow); border-radius: 8px; border: 1px solid rgba(139,92,246,0.15); font-size: 12px;">
-          <span>→</span>
-          <span><strong style="color: var(--purple);">2 layouts</strong> — the template cycles between them</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="sep"></div>
-
-  <!-- ─── Backgrounds ─── -->
-  <section>
-    <h3 style="color: var(--orange);">The Canvas</h3>
-    <h2>Backgrounds</h2>
-    <p>Backgrounds are the images or colors behind your text. They can live in two places, and where they live changes how they behave.</p>
-
-    <div style="display: flex; gap: 12px; margin: 24px 0; flex-wrap: wrap;">
-      <span class="scope-badge layout">◆ Layout Scope</span>
-      <span class="scope-badge template">◆ Template Scope</span>
-    </div>
-
-    <!-- Side-by-side video comparison -->
-    <div data-video-sync-group style="display: flex; gap: 24px; margin: 28px 0; flex-wrap: wrap; justify-content: center;">
-
-      <!-- Layout Scope -->
-      <div style="flex: 1 1 250px; max-width: 380px;">
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-          <span class="scope-badge layout">◆ Layout Scope</span>
-        </div>
-        <p style="font-size: 13px; color: var(--fg-dim); margin-bottom: 14px;">Backgrounds are <strong style="color:var(--fg);">tied to a layout</strong>. When the layout changes, its backgrounds go with it.</p>
-        <div style="border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
-          <video src="videos/background_layout_scope.mp4" loop muted playsinline data-sync-video style="width: 100%; display: block;"></video>
-        </div>
-      </div>
-
-      <!-- Template Scope -->
-      <div style="flex: 1 1 250px; max-width: 380px;">
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-          <span class="scope-badge template">◆ Template Scope</span>
-        </div>
-        <p style="font-size: 13px; color: var(--fg-dim); margin-bottom: 14px;">Backgrounds cycle <strong style="color:var(--fg);">independently</strong>. Layouts change, but backgrounds follow their own schedule.</p>
-        <div style="border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
-          <video src="videos/background_template_scope.mp4" loop muted playsinline data-sync-video style="width: 100%; display: block;"></video>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <div class="sep"></div>
-
-  <!-- ─── Overlays ─── -->
-  <section>
-    <h3 style="color: var(--salmon);">The Layers</h3>
-    <h2>Overlays</h2>
-    <p>Overlays are elements that sit on top of the background — logos, decorations, watermarks. Like backgrounds, they can be <strong>template-scoped</strong> or <strong>layout-scoped</strong>.</p>
-    <p>Overlays can have <strong>entrance and exit animations</strong> set in the plugin. They must live <strong>outside the <code>bg</code> group</strong> in your Figma layer structure.</p>
-
-    <!-- Overlay example image -->
-    <div style="display: flex; align-items: center; gap: 20px; margin: 24px 0; padding: 20px 24px; border-radius: 14px; border: 1px solid rgba(238,127,123,0.15); background: rgba(238,127,123,0.04);">
-      <img src="images/bruce_flying_overlay.png" alt="Bruce Lee flying kick overlay" style="width: 100px; flex-shrink: 0; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">
-      <div>
-        <div style="font-size: 13px; font-weight: 700; color: var(--salmon); margin-bottom: 4px;">Example overlay</div>
-        <div style="font-size: 13px; color: var(--fg-dim);">This image lives <strong style="color:var(--fg);">outside</strong> the <code style="font-size: 12px; background: rgba(255,255,255,0.06); padding: 1px 5px; border-radius: 4px;">bg</code> group in Figma. The plugin imports it as an overlay that floats on top of the background — with optional entrance and exit animations.</div>
-      </div>
-    </div>
-
-    <!-- Side-by-side video comparison -->
-    <div data-video-sync-group style="display: flex; gap: 24px; margin: 28px 0; flex-wrap: wrap; justify-content: center;">
-
-      <!-- Layout Scope -->
-      <div style="flex: 1 1 250px; max-width: 380px;">
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-          <span class="scope-badge layout">◆ Layout Scope</span>
-        </div>
-        <p style="font-size: 13px; color: var(--fg-dim); margin-bottom: 14px;">Overlay is <strong style="color:var(--fg);">tied to a layout</strong>. It appears only while that layout is active, then disappears.</p>
-        <div style="border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
-          <video src="videos/overlays_layout.mp4" loop muted playsinline data-sync-video style="width: 100%; display: block;"></video>
-        </div>
-      </div>
-
-      <!-- Template Scope -->
-      <div style="flex: 1 1 250px; max-width: 380px;">
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-          <span class="scope-badge template">◆ Template Scope</span>
-        </div>
-        <p style="font-size: 13px; color: var(--fg-dim); margin-bottom: 14px;">Overlay <strong style="color:var(--fg);">persists across all layouts</strong>. Layouts change, but the overlay stays visible.</p>
-        <div style="border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
-          <video src="videos/overlays_template.mp4" loop muted playsinline data-sync-video style="width: 100%; display: block;"></video>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <div class="sep"></div>
-
-  <!-- ─── Anchor Text ─── -->
-  <section>
-    <h3 style="color: var(--green);">The Star</h3>
-    <h2>Anchor Text</h2>
-    <p>Every layout has one <strong>anchor text</strong> — the text layer that gets replaced by your transcript at runtime. It's the text Typpo animates word-by-word as your audio plays.</p>
-    <p>If your Figma frame has multiple text layers, the plugin asks which one is the anchor. The rest become <strong>static overlays</strong> — baked as images that ride on top of the background.</p>
-
-    <!-- Animated preview: centered with annotation arrow -->
-    <div style="display: flex; flex-direction: column; align-items: center; margin: 28px 0; position: relative;">
-
-      <!-- Preview frame: centered, bigger -->
-      <div style="width: 100%; max-width: 340px; position: relative;">
-        <div id="anchorPhone" style="position: relative; aspect-ratio: 1/1; border-radius: 24px; overflow: hidden; background: linear-gradient(160deg, #0c1b2e, #162a46); border: 2px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
-
-          <!-- Text layer: tagline -->
-          <div class="anchor-target" data-anchor-id="tagline" data-static-text="June 2026" style="position: absolute; top: 20px; left: 20px; right: 20px; cursor: pointer; z-index: 3; padding: 6px 8px; border-radius: 8px; border: 1px dashed transparent; transition: border-color 0.3s ease, background 0.3s ease;">
-            <div class="anchor-target-text" style="font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.35); letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s ease;">June 2026</div>
-          </div>
-
-          <!-- Text layer: main text (default anchor) -->
-          <div class="anchor-target is-anchor" data-anchor-id="main" data-static-text="Your text here" style="position: absolute; top: 80px; left: 20px; right: 20px; bottom: 56px; display: flex; align-items: center; justify-content: center; padding: 12px; cursor: pointer; z-index: 3; border-radius: 8px; border: 1px dashed transparent; transition: border-color 0.3s ease, background 0.3s ease;">
-            <div class="anchor-target-text" style="font-family: 'Impact', 'Anton', sans-serif; font-size: 28px; color: #fff; text-transform: uppercase; text-align: center; line-height: 1.15; letter-spacing: 0.02em; transition: opacity 0.15s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);"></div>
-          </div>
-
-          <!-- Text layer: watermark -->
-          <div class="anchor-target" data-anchor-id="watermark" data-static-text="typpo.app" style="position: absolute; bottom: 16px; right: 16px; cursor: pointer; z-index: 3; padding: 6px 8px; border-radius: 8px; border: 1px dashed transparent; transition: border-color 0.3s ease, background 0.3s ease;">
-            <div class="anchor-target-text" style="font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.2); letter-spacing: 0.08em; transition: color 0.3s ease;">typpo.app</div>
-          </div>
-
-          <!-- Hint -->
-          <div id="anchorHint" style="position: absolute; bottom: 50px; left: 0; right: 0; text-align: center; font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.06em; pointer-events: none; transition: opacity 0.5s ease;">tap any text to make it the anchor</div>
-        </div>
-
-        <!-- Arrow annotation: outside the preview, to the right -->
-        <div id="anchorArrow" style="position: absolute; left: calc(100% + 16px); display: flex; align-items: center; gap: 8px; transition: top 0.5s cubic-bezier(0.22, 1, 0.36, 1); top: 45%; pointer-events: none;">
-          <svg width="32" height="20" viewBox="0 0 32 20" fill="none" style="flex-shrink: 0;">
-            <path d="M32 10 L6 10" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4 3"/>
-            <path d="M10 4 L2 10 L10 16" stroke="#10b981" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <div style="font-size: 11px; font-weight: 600; color: var(--green); letter-spacing: 0.04em; white-space: nowrap;" id="anchorArrowLabel">Anchor — replaced by transcript</div>
-        </div>
-
-        <!-- Legend below -->
-        <div style="display: flex; gap: 14px; margin-top: 14px; justify-content: center;">
-          <div style="display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--fg-dim);"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block;"></span> Anchor — replaced</div>
-          <div style="display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--fg-dim);"><span style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); display: inline-block;"></span> Static — frozen</div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Explanation card: full width underneath -->
-    <div style="padding: 20px 24px; border-radius: 12px; border: 1px solid rgba(16,185,129,0.12); background: rgba(16,185,129,0.03); margin-bottom: 8px;">
-      <div style="display: flex; gap: 32px; flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 180px;">
-          <div style="font-size: 12px; font-weight: 700; color: var(--green); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;">Anchor text</div>
-          <p style="font-size: 13px; color: var(--fg-dim); margin: 0;">The big text in the center is the <strong style="color: var(--fg);">anchor</strong>. Typpo replaces it with your transcript — word by word, as the audio plays.</p>
-        </div>
-        <div style="flex: 1; min-width: 180px;">
-          <div style="font-size: 12px; font-weight: 700; color: var(--fg-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;">Static overlays</div>
-          <p style="font-size: 13px; color: var(--fg-dim); margin: 0;">The tagline and watermark are <strong style="color: var(--fg);">not</strong> the anchor. They get baked as images and stay frozen — visible but never replaced.</p>
-        </div>
-        <div style="flex: 1; min-width: 180px;">
-          <div style="font-size: 12px; font-weight: 700; color: var(--fg-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;">Multiple text layers?</div>
-          <p style="font-size: 13px; color: var(--fg-dim); margin: 0;">The plugin asks you to pick the anchor. The rest automatically become static overlays.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="sep"></div>
-
-  <!-- ─── Putting it together ─── -->
-  <section>
-    <h3 style="color: var(--fg-dim);">The Big Picture</h3>
-    <h2>How It All Fits</h2>
-    <p><strong>Backgrounds</strong>, <strong>layouts</strong>, and <strong>overlays</strong> come together to make a template. When it plays, they all work in sync — backgrounds cycle, the anchor text animates word-by-word through your transcript, and overlays ride above.</p>
-
-    <!-- Exploded view: 3 cards on top → collapse into large template below -->
-    <div id="explodedView" style="margin: 40px 0;">
-
-      <!-- Top row: the three ingredient cards -->
-      <div id="explIngredients" style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);">
-
-        <!-- Background -->
-        <div class="expl-card" id="explCard-bg" style="--card-color: var(--orange);">
-          <div class="expl-card-label"><span class="expl-label-dot" style="background: var(--orange);"></span> Background</div>
-          <div class="expl-card-preview">
-            <img id="explBgImg" src="images/train0.png" alt="Background" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; transition: opacity 0.6s ease;">
-          </div>
-        </div>
-
-        <!-- Layout -->
-        <div class="expl-card" id="explCard-text" style="--card-color: var(--green);">
-          <div class="expl-card-label"><span class="expl-label-dot" style="background: var(--green);"></span> Layout</div>
-          <div class="expl-card-preview" style="display: flex; align-items: center; justify-content: center; padding: 12px;">
-            <div id="explAnchorText" style="font-family: 'Impact', 'Anton', sans-serif; font-size: 22px; color: #fff; text-transform: uppercase; text-align: center; line-height: 1.15; text-shadow: 0 2px 8px rgba(0,0,0,0.4);"></div>
-          </div>
-        </div>
-
-        <!-- Overlay -->
-        <div class="expl-card" id="explCard-overlay" style="--card-color: var(--salmon);">
-          <div class="expl-card-label"><span class="expl-label-dot" style="background: var(--salmon);"></span> Overlay</div>
-          <div class="expl-card-preview" style="display: flex; align-items: center; justify-content: center;">
-            <img src="images/bruce_flying_overlay.png" alt="Overlay" style="width: 80px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Large composite template below -->
-      <div style="display: flex; justify-content: center;">
-        <div id="explCompositeWrap" style="width: 100%; max-width: 500px; border-radius: 24px; overflow: hidden; border: 2px solid rgba(16,185,129,0.15); background: #0a0a0c; box-shadow: 0 20px 60px rgba(0,0,0,0.5); opacity: 0; transform: translateY(20px) scale(0.95); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);">
-
-          <div style="display: flex; align-items: center; gap: 8px; padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.05);">
-            <span class="expl-label-dot" style="background: var(--green); animation: pulse-dot 1.5s ease infinite;"></span>
-            <span style="font-size: 12px; font-weight: 700; color: var(--fg); letter-spacing: 0.04em; text-transform: uppercase;">Template</span>
-            <span style="font-size: 11px; color: var(--fg-dim); margin-left: auto;">All layers composited</span>
-          </div>
-
-          <div id="explComposite" style="position: relative; aspect-ratio: 1/1; overflow: hidden;">
-            <img id="explCompBg" src="images/train0.png" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.6s ease;">
-            <div id="explCompText" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 2;">
-              <span style="font-family: 'Impact', 'Anton', sans-serif; font-size: 42px; color: #fff; text-transform: uppercase; text-align: center; line-height: 1.1; text-shadow: 0 3px 16px rgba(0,0,0,0.6);"></span>
-            </div>
-            <img src="images/bruce_flying_overlay.png" alt="" style="position: absolute; bottom: 16px; right: 16px; width: 100px; z-index: 3; filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5));">
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Hint -->
-      <div style="text-align: center; margin-top: 14px;">
-        <span id="explHint" style="font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.06em; transition: opacity 0.4s ease;"></span>
-      </div>
-
-    </div>
-  </section>
-
-</div>
-
-<script>
-// Scroll-driven reveal
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.15 });
-
-document.querySelectorAll('section').forEach(s => observer.observe(s));
-
-// Animated text swap for phone demos
-const words = ['HELLO', 'JOIN US', "LET'S GO"];
-let wordIndex = 0;
-setInterval(() => {
-  wordIndex = (wordIndex + 1) % words.length;
-  document.querySelectorAll('.anchor-text.animated').forEach(el => {
-    el.style.opacity = '0';
-    setTimeout(() => {
-      el.textContent = words[wordIndex];
-      el.style.opacity = '1';
-    }, 300);
-  });
-}, 2000);
-
-// Layout reveal: trigger when scrolled into view
-const revealEl = document.getElementById('layoutReveal');
-if (revealEl) {
-  const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        setTimeout(() => revealEl.classList.add('is-revealed'), 400);
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.4 });
-  revealObserver.observe(revealEl);
-}
-
-// Layout text animations: Layout 1 types in per word, Layout 2 pops+fades per word
-// Layout 1 plays → Layout 2 plays → hold 2s → reset → loop
-function animateLayouts() {
-  const l1Words = document.querySelectorAll('.l1-word');
-  const l2Words = document.querySelectorAll('.l2-word');
-
-  // Reset all
-  l1Words.forEach(w => { w.style.opacity = '0'; w.style.transition = 'none'; });
-  l2Words.forEach(w => { w.style.opacity = '0'; w.style.transform = 'scale(0.7)'; w.style.transition = 'none'; });
-
-  let delay = 300;
-
-  // Layout 1: type in per word (opacity snap, like a cursor typing)
-  l1Words.forEach((w, i) => {
-    setTimeout(() => {
-      w.style.transition = 'opacity 0.08s ease';
-      w.style.opacity = '1';
-    }, delay + i * 400);
-  });
-
-  // Layout 2 starts after Layout 1 finishes + small pause
-  const l2Start = delay + l1Words.length * 400 + 600;
-
-  l2Words.forEach((w, i) => {
-    setTimeout(() => {
-      w.style.transition = 'opacity 0.35s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-      w.style.opacity = '1';
-      w.style.transform = 'scale(1)';
-    }, l2Start + i * 350);
-  });
-
-  // Hold 2s then restart
-  const totalDuration = l2Start + l2Words.length * 350 + 2000;
-  setTimeout(animateLayouts, totalDuration);
-}
-
-animateLayouts();
-
-// ─── Anchor text: click any text layer to make it the anchor ───
-// Each line is a scene — words appear one by one, then the group clears and the next plays.
-const anchorScenes = [
-  ['Hello', 'welcome', 'to', 'Typpo', 'w/', 'Figma.'],
-  ['We', 'are', 'excited', 'to', 'have', 'you', 'here'],
-];
-let anchorTimeout = null;
-const anchorTargets = document.querySelectorAll('.anchor-target');
-const anchorHint = document.getElementById('anchorHint');
-
-function setAnchor(targetEl) {
-  // Clear previous animation
-  if (anchorTimeout) clearTimeout(anchorTimeout);
-
-  // Hide hint after first click
-  if (anchorHint) anchorHint.style.opacity = '0';
-
-  anchorTargets.forEach(t => {
-    const textEl = t.querySelector('.anchor-target-text');
-    const isActive = t === targetEl;
-    t.classList.toggle('is-anchor', isActive);
-
-    if (isActive) {
-      t.style.borderColor = 'rgba(16,185,129,0.4)';
-      t.style.background = 'rgba(16,185,129,0.06)';
-      textEl.style.color = '#fff';
-      textEl.innerHTML = '';
-      playScenes(textEl, 0);
-
-      // Move the arrow to point at this element
-      const arrow = document.getElementById('anchorArrow');
-      const phone = document.getElementById('anchorPhone');
-      if (arrow && phone) {
-        const phoneRect = phone.getBoundingClientRect();
-        const targetRect = t.getBoundingClientRect();
-        const offsetTop = targetRect.top - phoneRect.top + targetRect.height / 2;
-        arrow.style.top = offsetTop + 'px';
-      }
-    } else {
-      t.style.borderColor = 'rgba(255,255,255,0.1)';
-      t.style.background = 'rgba(255,255,255,0.03)';
-      textEl.textContent = t.dataset.staticText;
-      textEl.style.opacity = '1';
-      textEl.style.transform = 'scale(1)';
-      textEl.style.color = 'rgba(255,255,255,0.3)';
-    }
-  });
-
-  function playScenes(el, sceneIdx) {
-    const scene = anchorScenes[sceneIdx % anchorScenes.length];
-    el.innerHTML = '';
-    el.style.opacity = '1';
-    let wordIdx = 0;
-
-    function showNextWord() {
-      if (wordIdx < scene.length) {
-        const span = document.createElement('span');
-        span.textContent = (wordIdx > 0 ? ' ' : '') + scene[wordIdx];
-        span.style.opacity = '0';
-        span.style.display = 'inline';
-        span.style.transition = 'opacity 0.15s ease';
-        el.appendChild(span);
-        // Trigger reflow then fade in
-        requestAnimationFrame(() => { span.style.opacity = '1'; });
-        wordIdx++;
-        anchorTimeout = setTimeout(showNextWord, 350);
-      } else {
-        // Hold the full phrase, then clear and play next scene
-        anchorTimeout = setTimeout(() => {
-          el.style.opacity = '0';
-          anchorTimeout = setTimeout(() => {
-            playScenes(el, sceneIdx + 1);
-          }, 400);
-        }, 1500);
-      }
-    }
-    showNextWord();
-  }
-}
-
-// Wire click handlers
-anchorTargets.forEach(t => {
-  t.addEventListener('click', () => setAnchor(t));
-});
-
-// ─── Script picker: crossfade between preloaded videos ───
-const allScriptVids = document.querySelectorAll('.script-vid');
-let activeScriptId = '1';
-
-document.querySelectorAll('.script-card').forEach(card => {
-  card.addEventListener('click', () => {
-    const scriptId = card.dataset.script;
-    if (scriptId === activeScriptId) return;
-    activeScriptId = scriptId;
-
-    // Update active card
-    document.querySelectorAll('.script-card').forEach(c => c.classList.remove('active'));
-    card.classList.add('active');
-
-    // Crossfade: fade out all, fade in the target
-    allScriptVids.forEach(v => {
-      if (v.dataset.script === scriptId) {
-        v.currentTime = 0;
-        v.play();
-        v.style.opacity = '1';
-      } else {
-        v.style.opacity = '0';
-        // Pause after fade completes to save resources
-        setTimeout(() => { if (v.dataset.script !== activeScriptId) v.pause(); }, 400);
-      }
-    });
-  });
-});
-
-// Auto-play/pause on scroll
-const scriptContainer = document.getElementById('scriptVideoContainer');
-if (scriptContainer) {
-  const svObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      allScriptVids.forEach(v => {
-        if (entry.isIntersecting && v.dataset.script === activeScriptId) {
-          v.currentTime = 0;
-          v.play();
-        } else if (!entry.isIntersecting) {
-          v.pause();
-        }
-      });
-    });
-  }, { threshold: 0.3 });
-  svObserver.observe(scriptContainer);
-}
-
-// Start with the main text as anchor
-const defaultAnchor = document.querySelector('.anchor-target.is-anchor');
-if (defaultAnchor) setAnchor(defaultAnchor);
-
-// ─── Sync video playback ───
-// Videos in the same [data-video-sync-group] start together when scrolled into view,
-// and reset + re-sync every time the group re-enters the viewport.
-document.querySelectorAll('[data-video-sync-group]').forEach(group => {
-  const videos = Array.from(group.querySelectorAll('video[data-sync-video]'));
-  if (videos.length === 0) return;
-
-  // Preload and pause all initially
-  videos.forEach(v => { v.preload = 'auto'; v.pause(); v.currentTime = 0; });
-
-  function syncPlay() {
-    // Reset all to the start
-    videos.forEach(v => { v.pause(); v.currentTime = 0; });
-
-    // Wait until every video has enough data to play without stalling
-    let readyCount = 0;
-    videos.forEach(v => {
-      function check() {
-        readyCount++;
-        if (readyCount === videos.length) {
-          // All ready — start them on the same animation frame
-          requestAnimationFrame(() => {
-            videos.forEach(vid => vid.play());
-          });
-        }
-      }
-      if (v.readyState >= 3) {
-        check();
-      } else {
-        v.addEventListener('canplaythrough', check, { once: true });
-        v.load();
-      }
-    });
-  }
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        syncPlay();
-      } else {
-        videos.forEach(v => v.pause());
-      }
-    });
-  }, { threshold: 0.3 });
-
-  observer.observe(group);
-});
-
-// ─── Exploded View: cards on top → collapse into large template below ───
-const explBgImg = document.getElementById('explBgImg');
-const explCompBg = document.getElementById('explCompBg');
-const explAnchorText = document.getElementById('explAnchorText');
-const explCompText = document.querySelector('#explCompText span');
-const explIngredients = document.getElementById('explIngredients');
-const explCompositeWrap = document.getElementById('explCompositeWrap');
-const explHint = document.getElementById('explHint');
-const explBgs = ['images/train0.png', 'images/train1.png', 'images/train2.png', 'images/train3.png'];
-const explWords = [
-  ['Hello', 'welcome', 'to', 'Typpo'],
-  ['We', 'are', 'excited', 'to', 'have', 'you', 'here'],
-];
-let explActive = false;
-let explIsCollapsed = false;
-let explTimers = [];
-
-function clearExplTimers() { explTimers.forEach(t => clearTimeout(t)); explTimers = []; }
-
-function explPlayTextOn(el, sceneIdx) {
-  if (!explActive || !el) return;
-  const scene = explWords[sceneIdx % explWords.length];
-  el.innerHTML = '';
-  let wi = 0;
-  function next() {
-    if (!explActive) return;
-    if (wi < scene.length) {
-      const span = document.createElement('span');
-      span.textContent = (wi > 0 ? ' ' : '') + scene[wi];
-      span.style.opacity = '0'; span.style.display = 'inline';
-      span.style.transition = 'opacity 0.15s ease';
-      el.appendChild(span);
-      requestAnimationFrame(() => { span.style.opacity = '1'; });
-      wi++;
-      explTimers.push(setTimeout(next, 300));
-    } else {
-      explTimers.push(setTimeout(() => {
-        if (!explActive) return;
-        el.style.opacity = '0';
-        explTimers.push(setTimeout(() => { el.style.opacity = '1'; explPlayTextOn(el, sceneIdx + 1); }, 400));
-      }, 1500));
-    }
-  }
-  next();
-}
-
-function explCycleBg() {
-  if (!explActive) return;
-  let idx = 0;
-  function step() {
-    if (!explActive) return;
-    idx = (idx + 1) % explBgs.length;
-    [explBgImg, explCompBg].forEach(img => {
-      if (!img) return;
-      img.style.opacity = '0';
-      setTimeout(() => { img.src = explBgs[idx]; img.style.opacity = '1'; }, 300);
-    });
-    explTimers.push(setTimeout(step, 3000));
-  }
-  explTimers.push(setTimeout(step, 2500));
-}
-
-function explShow() {
-  // Show ingredients above the composite
-  explIsCollapsed = false;
-  if (explIngredients) { explIngredients.style.opacity = '1'; explIngredients.style.transform = 'translateY(0)'; explIngredients.style.pointerEvents = 'auto'; }
-  if (explHint) explHint.textContent = '';
-}
-
-function explCollapse() {
-  // Stagger the ingredients into the composite one by one, then hide them
-  explIsCollapsed = true;
-  const cards = explIngredients ? explIngredients.querySelectorAll('.expl-card') : [];
-
-  // Animate each card: slide down + fade, staggered
-  cards.forEach((card, i) => {
-    card.style.transition = `transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.2}s, opacity 0.5s ease ${i * 0.2}s`;
-    card.style.transform = 'translateY(30px) scale(0.9)';
-    card.style.opacity = '0';
-  });
-
-  // Show composite after all cards have animated in
-  const totalDelay = cards.length * 200 + 400;
-  explTimers.push(setTimeout(() => {
-    if (explCompositeWrap) { explCompositeWrap.style.opacity = '1'; explCompositeWrap.style.transform = 'translateY(0) scale(1)'; }
-    if (explHint) explHint.textContent = 'hover to see the layers';
-  }, totalDelay));
-}
-
-function explReset() {
-  // Reset card styles for re-explode
-  const cards = explIngredients ? explIngredients.querySelectorAll('.expl-card') : [];
-  cards.forEach(card => {
-    card.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease';
-    card.style.transform = 'translateY(0) scale(1)';
-    card.style.opacity = '1';
-  });
-}
-
-function startExplPlayback() {
-  explActive = true;
-  clearExplTimers();
-  explPlayTextOn(explAnchorText, 0);
-  explPlayTextOn(explCompText, 0);
-  explCycleBg();
-}
-
-function stopExplPlayback() {
-  explActive = false;
-  clearExplTimers();
-}
-
-// Hover on composite → show ingredients above (composite stays)
-if (explCompositeWrap) {
-  explCompositeWrap.addEventListener('mouseenter', () => {
-    if (explIsCollapsed) {
-      explReset(); // fade cards back in
-      if (explIngredients) { explIngredients.style.opacity = '1'; explIngredients.style.pointerEvents = 'auto'; }
-    }
-  });
-  explCompositeWrap.addEventListener('mouseleave', () => {
-    // Hide ingredients again
-    const cards = explIngredients ? explIngredients.querySelectorAll('.expl-card') : [];
-    cards.forEach((card, i) => {
-      card.style.transition = `transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.1}s, opacity 0.3s ease ${i * 0.1}s`;
-      card.style.transform = 'translateY(10px) scale(0.95)';
-      card.style.opacity = '0';
-    });
-  });
-}
-
-// Scroll trigger: show ingredients → stagger-collapse into composite after 3s
-const explView = document.getElementById('explodedView');
-if (explView) {
-  const explObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        // Reset: show ingredients, hide composite
-        explReset();
-        if (explIngredients) { explIngredients.style.opacity = '1'; }
-        if (explCompositeWrap) { explCompositeWrap.style.opacity = '0'; explCompositeWrap.style.transform = 'translateY(20px) scale(0.95)'; }
-        explIsCollapsed = false;
-        startExplPlayback();
-        // After 3s: stagger cards into composite
-        explTimers.push(setTimeout(explCollapse, 3000));
-      } else {
-        stopExplPlayback();
-        explIsCollapsed = false;
-        explReset();
-        if (explIngredients) { explIngredients.style.opacity = '1'; }
-        if (explCompositeWrap) { explCompositeWrap.style.opacity = '0'; explCompositeWrap.style.transform = 'translateY(20px) scale(0.95)'; }
-        if (explAnchorText) explAnchorText.innerHTML = '';
-        if (explCompText) explCompText.innerHTML = '';
-      }
-    });
-  }, { threshold: 0.3 });
-  explObserver.observe(explView);
-}
-</script>
 </body>
 </html>
