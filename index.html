@@ -356,12 +356,143 @@ p strong { color: var(--fg); font-weight: 600; }
 }
 
 
+/* ─── Exploded View ─── */
+.expl-card {
+  flex: 0 0 auto;
+  width: 160px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border-color 0.3s ease;
+}
+.expl-card:hover {
+  border-color: var(--card-color, rgba(255,255,255,0.15));
+}
+.expl-card-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--fg-dim);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.expl-card-preview {
+  aspect-ratio: 1/1;
+  position: relative;
+}
+.expl-label-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.expl-plus {
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.15);
+  padding-top: 40px;
+  transition: opacity 0.4s ease;
+}
+.expl-composite {
+  border-color: rgba(16, 185, 129, 0.2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(16,185,129,0.08);
+}
+/* Hover the composite → ingredient cards lift and glow */
+.expl-composite:hover ~ .expl-card { transform: translateY(-4px); }
+#explodedRow:has(.expl-composite:hover) .expl-card:not(.expl-composite) {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+  border-color: var(--card-color, rgba(255,255,255,0.2));
+}
+#explodedRow:has(.expl-composite:hover) .expl-plus {
+  color: rgba(255,255,255,0.4);
+}
+/* ─── Script Picker Cards ─── */
+.script-card {
+  appearance: none;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  border-radius: 14px;
+  padding: 14px 16px;
+  min-width: 200px;
+  max-width: 240px;
+  flex-shrink: 0;
+  cursor: pointer;
+  text-align: left;
+  color: var(--fg-dim);
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+}
+.script-card:hover {
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.04);
+  transform: translateY(-2px);
+}
+.script-card.active {
+  border-color: var(--green);
+  background: rgba(16,185,129,0.06);
+  box-shadow: 0 0 16px rgba(16,185,129,0.1);
+}
+.script-card-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--fg);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.script-card.active .script-card-title { color: var(--green); }
+.script-card-scenes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  counter-reset: scene;
+}
+.script-card-scenes li {
+  counter-increment: scene;
+  padding-left: 18px;
+  position: relative;
+}
+.script-card-scenes li::before {
+  content: counter(scene);
+  position: absolute;
+  left: 0;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--fg-dim);
+  background: rgba(255,255,255,0.06);
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 1px;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
 /* ─── Responsive ─── */
 @media (max-width: 600px) {
   .layout-row { flex-direction: column; }
   .overlay-demo { flex-wrap: wrap; justify-content: center; }
   .layout-reveal-video { width: 160px; }
   .layout-reveal-bg { width: 80px; }
+  .example-row { flex-direction: column; }
 }
 </style>
 </head>
@@ -373,6 +504,84 @@ p strong { color: var(--fg); font-weight: 600; }
     <div class="hero-badge"><span class="dot"></span> Typpo Figma Plugin</div>
     <h1>What is a Template?</h1>
     <p>A template is the blueprint that turns your Figma designs into animated video. It defines <strong>how text appears</strong>, <strong>what backgrounds cycle</strong>, and <strong>which overlays persist</strong> — all composed from your Figma frames.</p>
+    <p style="margin-top: 16px;">Once you've built a template, you can <strong>reuse it endlessly</strong> — just swap the script and Typpo renders a fresh video with the same design. New script, same look, instant video. Or use the plugin as a <strong>one-off</strong> to bring a single Figma design to life.</p>
+
+    <!-- ─── Reuse Demo: Figma board → video → script picker ─── -->
+    <div style="margin-top: 40px;">
+
+      <!-- Banner: Figma board overview -->
+      <div style="border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 24px;">
+        <img id="figmaBoardBanner" src="images/figma-board-banner.png" alt="Figma board showing all template layouts" style="width: 100%; display: block;">
+        <div style="padding: 10px 16px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: var(--fg-dim);">Your Figma board — 5 layouts + intro & outro</div>
+      </div>
+
+      <!-- Video player: all videos preloaded, stacked, crossfade on switch -->
+      <div style="max-width: 400px; margin: 0 auto 20px;">
+        <div id="scriptVideoContainer" style="position: relative; border-radius: 20px; overflow: hidden; border: 2px solid rgba(255,255,255,0.08); box-shadow: 0 16px 48px rgba(0,0,0,0.4);">
+          <video class="script-vid" data-script="1" src="videos/script-1.mov" loop muted playsinline preload="auto" style="width: 100%; display: block; transition: opacity 0.4s ease;"></video>
+          <video class="script-vid" data-script="2" src="videos/script-2.mov" loop muted playsinline preload="auto" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease;"></video>
+          <video class="script-vid" data-script="3" src="videos/script-3.mov" loop muted playsinline preload="auto" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease;"></video>
+          <video class="script-vid" data-script="4" src="videos/script-4.mov" loop muted playsinline preload="auto" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease;"></video>
+        </div>
+      </div>
+
+      <!-- Script picker: horizontal scroll -->
+      <div style="margin-top: 20px;">
+        <div style="font-size: 11px; font-weight: 600; color: var(--fg-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;">Swap the script — same template, different video</div>
+        <div style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+
+          <!-- Script 1 -->
+          <button class="script-card active" data-script="1" data-video="videos/script-1.mov" type="button" style="scroll-snap-align: start;">
+            <div class="script-card-title">Script 1</div>
+            <ol class="script-card-scenes">
+              <li>Come out to Los Angeles</li>
+              <li>Enjoy the strikes</li>
+              <li>Soak in the sun</li>
+              <li>West coast aka the best coast</li>
+              <li>See you here</li>
+            </ol>
+          </button>
+
+          <!-- Script 2 -->
+          <button class="script-card" data-script="2" data-video="videos/script-2.mov" type="button" style="scroll-snap-align: start;">
+            <div class="script-card-title">Script 2</div>
+            <ol class="script-card-scenes">
+              <li>Pack your bags today</li>
+              <li>Head to the west side</li>
+              <li>Feel the ocean breeze</li>
+              <li>Live your best life here</li>
+              <li>Welcome to LA</li>
+            </ol>
+          </button>
+
+          <!-- Script 3 -->
+          <button class="script-card" data-script="3" data-video="videos/script-3.mov" type="button" style="scroll-snap-align: start;">
+            <div class="script-card-title">Script 3</div>
+            <ol class="script-card-scenes">
+              <li>California is calling</li>
+              <li>Chase the golden sunsets</li>
+              <li>Surf waves every morning</li>
+              <li>Palm trees and good vibes</li>
+              <li>Make LA your home</li>
+            </ol>
+          </button>
+
+          <!-- Script 4 -->
+          <button class="script-card" data-script="4" data-video="videos/script-4.mov" type="button" style="scroll-snap-align: start;">
+            <div class="script-card-title">Script 4</div>
+            <ol class="script-card-scenes">
+              <li>Leave the cold behind</li>
+              <li>Endless summer awaits</li>
+              <li>Tacos on every corner</li>
+              <li>The city of angels</li>
+              <li>Start fresh in LA</li>
+            </ol>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
   </section>
 
   <div class="sep"></div>
@@ -430,19 +639,19 @@ p strong { color: var(--fg); font-weight: 600; }
       </div>
     </div>
 
-    <!-- Same-layout example: thumbnails left, explanation right -->
-    <div style="display: flex; gap: 24px; margin-top: 28px; align-items: flex-start; flex-wrap: wrap;">
-      <div style="display: flex; gap: 8px; flex-shrink: 0;">
-        <div style="width: 140px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); position: relative;">
+    <!-- Same-layout example: thumbnails left (bigger), explanation right (smaller) -->
+    <div class="example-row" style="display: flex; gap: 24px; margin-top: 28px; align-items: flex-start;">
+      <div style="display: flex; gap: 8px; flex: 3; min-width: 0;">
+        <div style="flex: 1; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); position: relative;">
           <img src="images/same-layout-1.png" alt="Frame 1" style="width: 100%; display: block;">
           <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 5px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); font-size: 9px; color: var(--fg-dim);">Frame 1</div>
         </div>
-        <div style="width: 140px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); position: relative;">
+        <div style="flex: 1; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); position: relative;">
           <img src="images/same-layout-2.png" alt="Frame 2" style="width: 100%; display: block;">
           <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 5px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); font-size: 9px; color: var(--fg-dim);">Frame 2</div>
         </div>
       </div>
-      <div style="flex: 1; min-width: 200px;">
+      <div style="flex: 2; min-width: 160px;">
         <h3 style="color: var(--green); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin: 0 0 8px;">Same Layout</h3>
         <p style="font-size: 13px; color: var(--fg-dim); margin: 0 0 10px;">These two frames have <strong style="color: var(--fg);">identical text styling</strong> — same font, size, color, and position. Only the words and background differ.</p>
         <div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--green-dim); border-radius: 8px; border: 1px solid rgba(16,185,129,0.15); font-size: 12px;">
@@ -472,21 +681,21 @@ p strong { color: var(--fg); font-weight: 600; }
       <strong style="color: var(--fg);">What makes them different?</strong> Same styling + different words = one layout. Change any style property = separate layout.
     </p>
 
-    <!-- Different-layout example: thumbnails left, explanation right -->
-    <div style="display: flex; gap: 24px; margin-top: 20px; align-items: flex-start; flex-wrap: wrap;">
-      <div style="display: flex; gap: 8px; flex-shrink: 0;">
-        <div style="width: 140px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(139,92,246,0.2); position: relative; background: #000;">
+    <!-- Different-layout example: thumbnails left (bigger), explanation right (smaller) -->
+    <div class="example-row" style="display: flex; gap: 24px; margin-top: 20px; align-items: flex-start;">
+      <div style="display: flex; gap: 8px; flex: 3; min-width: 0;">
+        <div style="flex: 1; border-radius: 12px; overflow: hidden; border: 1px solid rgba(139,92,246,0.2); position: relative; background: #000;">
           <img src="images/diff-layout-1.png" alt="Layout 1" style="width: 100%; display: block;">
           <div style="position: absolute; top: 6px; left: 6px; background: var(--purple); color: #fff; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">L1</div>
           <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 4px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); font-size: 9px; color: var(--fg-dim);">Bottom-left</div>
         </div>
-        <div style="width: 140px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(139,92,246,0.2); position: relative; background: #000;">
+        <div style="flex: 1; border-radius: 12px; overflow: hidden; border: 1px solid rgba(139,92,246,0.2); position: relative; background: #000;">
           <img src="images/diff-layout-2.png" alt="Layout 2" style="width: 100%; display: block;">
           <div style="position: absolute; top: 6px; left: 6px; background: var(--purple); color: #fff; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">L2</div>
           <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 4px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); font-size: 9px; color: var(--fg-dim);">Top-left</div>
         </div>
       </div>
-      <div style="flex: 1; min-width: 200px;">
+      <div style="flex: 2; min-width: 160px;">
         <h3 style="color: var(--purple); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin: 0 0 8px;">Different Layouts</h3>
         <p style="font-size: 13px; color: var(--fg-dim); margin: 0 0 10px;">Same font, but the <strong style="color: var(--fg);">position is different</strong>. Layout 1 places text bottom-left; Layout 2 places it top-left. Any style change makes it a separate layout.</p>
         <div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--purple-glow); border-radius: 8px; border: 1px solid rgba(139,92,246,0.15); font-size: 12px;">
@@ -662,32 +871,66 @@ p strong { color: var(--fg); font-weight: 600; }
   <section>
     <h3 style="color: var(--fg-dim);">The Big Picture</h3>
     <h2>How It All Fits</h2>
-    <p>When your transcript plays, Typpo cycles through layouts in order. Each layout renders its group of words using its text style, pulls the next background in its cycle, and shows its overlays. Template-scoped elements ride above everything, persistent across the whole video.</p>
+    <p><strong>Backgrounds</strong>, <strong>layouts</strong>, and <strong>overlays</strong> come together to make a template. When it plays, they all work in sync — backgrounds cycle, the anchor text animates word-by-word through your transcript, and overlays ride above.</p>
 
-    <div class="diagram" style="padding: 24px;">
-      <div style="display: flex; flex-direction: column; gap: 4px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: var(--fg-dim);">
-        <div style="color: var(--fg); font-weight: 600;">Template</div>
-        <div style="padding-left: 20px; border-left: 1px solid rgba(255,255,255,0.08);">
-          <div style="color: var(--orange);">├── Template Backgrounds <span style="color: var(--fg-dim); font-size: 11px;">(cycle independently)</span></div>
-          <div style="color: var(--salmon);">├── Template Overlays <span style="color: var(--fg-dim); font-size: 11px;">(always visible)</span></div>
-          <div style="margin-top: 8px;">
-            <div style="color: var(--green);">├── Text Layout 1</div>
-            <div style="padding-left: 20px; border-left: 1px solid rgba(255,255,255,0.06);">
-              <div>│ ├── <span style="color: var(--green);">Anchor Text</span> <span style="color: var(--fg-dim); font-size: 11px;">← transcript goes here</span></div>
-              <div>│ ├── Layout Backgrounds <span style="color: var(--fg-dim); font-size: 11px;">(cycle within this layout)</span></div>
-              <div>│ └── Layout Overlays <span style="color: var(--fg-dim); font-size: 11px;">(visible only during this layout)</span></div>
-            </div>
-          </div>
-          <div style="margin-top: 8px;">
-            <div style="color: var(--purple);">└── Text Layout 2</div>
-            <div style="padding-left: 20px; border-left: 1px solid rgba(255,255,255,0.06);">
-              <div>  ├── <span style="color: var(--purple);">Anchor Text</span></div>
-              <div>  ├── Layout Backgrounds</div>
-              <div>  └── Layout Overlays</div>
-            </div>
+    <!-- Exploded view: 3 cards on top → collapse into large template below -->
+    <div id="explodedView" style="margin: 40px 0;">
+
+      <!-- Top row: the three ingredient cards -->
+      <div id="explIngredients" style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);">
+
+        <!-- Background -->
+        <div class="expl-card" id="explCard-bg" style="--card-color: var(--orange);">
+          <div class="expl-card-label"><span class="expl-label-dot" style="background: var(--orange);"></span> Background</div>
+          <div class="expl-card-preview">
+            <img id="explBgImg" src="images/train0.png" alt="Background" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; transition: opacity 0.6s ease;">
           </div>
         </div>
+
+        <!-- Layout -->
+        <div class="expl-card" id="explCard-text" style="--card-color: var(--green);">
+          <div class="expl-card-label"><span class="expl-label-dot" style="background: var(--green);"></span> Layout</div>
+          <div class="expl-card-preview" style="display: flex; align-items: center; justify-content: center; padding: 12px;">
+            <div id="explAnchorText" style="font-family: 'Impact', 'Anton', sans-serif; font-size: 22px; color: #fff; text-transform: uppercase; text-align: center; line-height: 1.15; text-shadow: 0 2px 8px rgba(0,0,0,0.4);"></div>
+          </div>
+        </div>
+
+        <!-- Overlay -->
+        <div class="expl-card" id="explCard-overlay" style="--card-color: var(--salmon);">
+          <div class="expl-card-label"><span class="expl-label-dot" style="background: var(--salmon);"></span> Overlay</div>
+          <div class="expl-card-preview" style="display: flex; align-items: center; justify-content: center;">
+            <img src="images/bruce_flying_overlay.png" alt="Overlay" style="width: 80px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">
+          </div>
+        </div>
+
       </div>
+
+      <!-- Large composite template below -->
+      <div style="display: flex; justify-content: center;">
+        <div id="explCompositeWrap" style="width: 100%; max-width: 500px; border-radius: 24px; overflow: hidden; border: 2px solid rgba(16,185,129,0.15); background: #0a0a0c; box-shadow: 0 20px 60px rgba(0,0,0,0.5); opacity: 0; transform: translateY(20px) scale(0.95); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);">
+
+          <div style="display: flex; align-items: center; gap: 8px; padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <span class="expl-label-dot" style="background: var(--green); animation: pulse-dot 1.5s ease infinite;"></span>
+            <span style="font-size: 12px; font-weight: 700; color: var(--fg); letter-spacing: 0.04em; text-transform: uppercase;">Template</span>
+            <span style="font-size: 11px; color: var(--fg-dim); margin-left: auto;">All layers composited</span>
+          </div>
+
+          <div id="explComposite" style="position: relative; aspect-ratio: 1/1; overflow: hidden;">
+            <img id="explCompBg" src="images/train0.png" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.6s ease;">
+            <div id="explCompText" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 2;">
+              <span style="font-family: 'Impact', 'Anton', sans-serif; font-size: 42px; color: #fff; text-transform: uppercase; text-align: center; line-height: 1.1; text-shadow: 0 3px 16px rgba(0,0,0,0.6);"></span>
+            </div>
+            <img src="images/bruce_flying_overlay.png" alt="" style="position: absolute; bottom: 16px; right: 16px; width: 100px; z-index: 3; filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5));">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Hint -->
+      <div style="text-align: center; margin-top: 14px;">
+        <span id="explHint" style="font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 0.06em; transition: opacity 0.4s ease;"></span>
+      </div>
+
     </div>
   </section>
 
@@ -856,6 +1099,53 @@ anchorTargets.forEach(t => {
   t.addEventListener('click', () => setAnchor(t));
 });
 
+// ─── Script picker: crossfade between preloaded videos ───
+const allScriptVids = document.querySelectorAll('.script-vid');
+let activeScriptId = '1';
+
+document.querySelectorAll('.script-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const scriptId = card.dataset.script;
+    if (scriptId === activeScriptId) return;
+    activeScriptId = scriptId;
+
+    // Update active card
+    document.querySelectorAll('.script-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+
+    // Crossfade: fade out all, fade in the target
+    allScriptVids.forEach(v => {
+      if (v.dataset.script === scriptId) {
+        v.currentTime = 0;
+        v.play();
+        v.style.opacity = '1';
+      } else {
+        v.style.opacity = '0';
+        // Pause after fade completes to save resources
+        setTimeout(() => { if (v.dataset.script !== activeScriptId) v.pause(); }, 400);
+      }
+    });
+  });
+});
+
+// Auto-play/pause on scroll
+const scriptContainer = document.getElementById('scriptVideoContainer');
+if (scriptContainer) {
+  const svObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      allScriptVids.forEach(v => {
+        if (entry.isIntersecting && v.dataset.script === activeScriptId) {
+          v.currentTime = 0;
+          v.play();
+        } else if (!entry.isIntersecting) {
+          v.pause();
+        }
+      });
+    });
+  }, { threshold: 0.3 });
+  svObserver.observe(scriptContainer);
+}
+
 // Start with the main text as anchor
 const defaultAnchor = document.querySelector('.anchor-target.is-anchor');
 if (defaultAnchor) setAnchor(defaultAnchor);
@@ -907,6 +1197,165 @@ document.querySelectorAll('[data-video-sync-group]').forEach(group => {
 
   observer.observe(group);
 });
+
+// ─── Exploded View: cards on top → collapse into large template below ───
+const explBgImg = document.getElementById('explBgImg');
+const explCompBg = document.getElementById('explCompBg');
+const explAnchorText = document.getElementById('explAnchorText');
+const explCompText = document.querySelector('#explCompText span');
+const explIngredients = document.getElementById('explIngredients');
+const explCompositeWrap = document.getElementById('explCompositeWrap');
+const explHint = document.getElementById('explHint');
+const explBgs = ['images/train0.png', 'images/train1.png', 'images/train2.png', 'images/train3.png'];
+const explWords = [
+  ['Hello', 'welcome', 'to', 'Typpo'],
+  ['We', 'are', 'excited', 'to', 'have', 'you', 'here'],
+];
+let explActive = false;
+let explIsCollapsed = false;
+let explTimers = [];
+
+function clearExplTimers() { explTimers.forEach(t => clearTimeout(t)); explTimers = []; }
+
+function explPlayTextOn(el, sceneIdx) {
+  if (!explActive || !el) return;
+  const scene = explWords[sceneIdx % explWords.length];
+  el.innerHTML = '';
+  let wi = 0;
+  function next() {
+    if (!explActive) return;
+    if (wi < scene.length) {
+      const span = document.createElement('span');
+      span.textContent = (wi > 0 ? ' ' : '') + scene[wi];
+      span.style.opacity = '0'; span.style.display = 'inline';
+      span.style.transition = 'opacity 0.15s ease';
+      el.appendChild(span);
+      requestAnimationFrame(() => { span.style.opacity = '1'; });
+      wi++;
+      explTimers.push(setTimeout(next, 300));
+    } else {
+      explTimers.push(setTimeout(() => {
+        if (!explActive) return;
+        el.style.opacity = '0';
+        explTimers.push(setTimeout(() => { el.style.opacity = '1'; explPlayTextOn(el, sceneIdx + 1); }, 400));
+      }, 1500));
+    }
+  }
+  next();
+}
+
+function explCycleBg() {
+  if (!explActive) return;
+  let idx = 0;
+  function step() {
+    if (!explActive) return;
+    idx = (idx + 1) % explBgs.length;
+    [explBgImg, explCompBg].forEach(img => {
+      if (!img) return;
+      img.style.opacity = '0';
+      setTimeout(() => { img.src = explBgs[idx]; img.style.opacity = '1'; }, 300);
+    });
+    explTimers.push(setTimeout(step, 3000));
+  }
+  explTimers.push(setTimeout(step, 2500));
+}
+
+function explShow() {
+  // Show ingredients above the composite
+  explIsCollapsed = false;
+  if (explIngredients) { explIngredients.style.opacity = '1'; explIngredients.style.transform = 'translateY(0)'; explIngredients.style.pointerEvents = 'auto'; }
+  if (explHint) explHint.textContent = '';
+}
+
+function explCollapse() {
+  // Stagger the ingredients into the composite one by one, then hide them
+  explIsCollapsed = true;
+  const cards = explIngredients ? explIngredients.querySelectorAll('.expl-card') : [];
+
+  // Animate each card: slide down + fade, staggered
+  cards.forEach((card, i) => {
+    card.style.transition = `transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.2}s, opacity 0.5s ease ${i * 0.2}s`;
+    card.style.transform = 'translateY(30px) scale(0.9)';
+    card.style.opacity = '0';
+  });
+
+  // Show composite after all cards have animated in
+  const totalDelay = cards.length * 200 + 400;
+  explTimers.push(setTimeout(() => {
+    if (explCompositeWrap) { explCompositeWrap.style.opacity = '1'; explCompositeWrap.style.transform = 'translateY(0) scale(1)'; }
+    if (explHint) explHint.textContent = 'hover to see the layers';
+  }, totalDelay));
+}
+
+function explReset() {
+  // Reset card styles for re-explode
+  const cards = explIngredients ? explIngredients.querySelectorAll('.expl-card') : [];
+  cards.forEach(card => {
+    card.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease';
+    card.style.transform = 'translateY(0) scale(1)';
+    card.style.opacity = '1';
+  });
+}
+
+function startExplPlayback() {
+  explActive = true;
+  clearExplTimers();
+  explPlayTextOn(explAnchorText, 0);
+  explPlayTextOn(explCompText, 0);
+  explCycleBg();
+}
+
+function stopExplPlayback() {
+  explActive = false;
+  clearExplTimers();
+}
+
+// Hover on composite → show ingredients above (composite stays)
+if (explCompositeWrap) {
+  explCompositeWrap.addEventListener('mouseenter', () => {
+    if (explIsCollapsed) {
+      explReset(); // fade cards back in
+      if (explIngredients) { explIngredients.style.opacity = '1'; explIngredients.style.pointerEvents = 'auto'; }
+    }
+  });
+  explCompositeWrap.addEventListener('mouseleave', () => {
+    // Hide ingredients again
+    const cards = explIngredients ? explIngredients.querySelectorAll('.expl-card') : [];
+    cards.forEach((card, i) => {
+      card.style.transition = `transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.1}s, opacity 0.3s ease ${i * 0.1}s`;
+      card.style.transform = 'translateY(10px) scale(0.95)';
+      card.style.opacity = '0';
+    });
+  });
+}
+
+// Scroll trigger: show ingredients → stagger-collapse into composite after 3s
+const explView = document.getElementById('explodedView');
+if (explView) {
+  const explObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Reset: show ingredients, hide composite
+        explReset();
+        if (explIngredients) { explIngredients.style.opacity = '1'; }
+        if (explCompositeWrap) { explCompositeWrap.style.opacity = '0'; explCompositeWrap.style.transform = 'translateY(20px) scale(0.95)'; }
+        explIsCollapsed = false;
+        startExplPlayback();
+        // After 3s: stagger cards into composite
+        explTimers.push(setTimeout(explCollapse, 3000));
+      } else {
+        stopExplPlayback();
+        explIsCollapsed = false;
+        explReset();
+        if (explIngredients) { explIngredients.style.opacity = '1'; }
+        if (explCompositeWrap) { explCompositeWrap.style.opacity = '0'; explCompositeWrap.style.transform = 'translateY(20px) scale(0.95)'; }
+        if (explAnchorText) explAnchorText.innerHTML = '';
+        if (explCompText) explCompText.innerHTML = '';
+      }
+    });
+  }, { threshold: 0.3 });
+  explObserver.observe(explView);
+}
 </script>
 </body>
 </html>

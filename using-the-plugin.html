@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using the Typpo Figma Plugin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #040406;
+  --fg: #e8e8ec;
+  --fg-dim: #8b8b96;
+  --green: #10b981;
+  --green-glow: rgba(16, 185, 129, 0.25);
+  --green-dim: rgba(16, 185, 129, 0.08);
+  --purple: #8b5cf6;
+  --purple-glow: rgba(139, 92, 246, 0.2);
+  --blue: #3b82f6;
+  --blue-glow: rgba(59, 130, 246, 0.2);
+  --orange: #f59e0b;
+  --orange-glow: rgba(245, 158, 11, 0.2);
+  --salmon: #ee7f7b;
+  --salmon-glow: rgba(238, 127, 123, 0.2);
+  --card: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(255, 255, 255, 0.06);
+  --font: "Montserrat", -apple-system, system-ui, sans-serif;
+  --mono: "SF Mono", "Fira Code", ui-monospace, monospace;
+  --r: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+/* ─── Layout ─── */
+.page { max-width: 860px; margin: 0 auto; padding: 64px 24px 160px; }
+
+section {
+  margin-bottom: 96px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+section.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── Typography ─── */
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 24px;
+}
+.hero-badge .dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+  box-shadow: 0 0 12px var(--green-glow);
+}
+h1 {
+  font-size: clamp(36px, 6vw, 56px); font-weight: 800; letter-spacing: -0.03em;
+  line-height: 1.1; margin-bottom: 20px;
+  background: linear-gradient(135deg, #fff 0%, #b0b0b8 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+h2 {
+  font-size: clamp(22px, 4vw, 30px); font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.2; margin-bottom: 14px; color: #fff;
+}
+h3 {
+  font-size: 14px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+p { color: var(--fg-dim); font-size: 16px; max-width: 600px; margin-bottom: 16px; }
+p strong { color: var(--fg); font-weight: 600; }
+a { color: var(--green); text-decoration: none; border-bottom: 1px solid rgba(16,185,129,0.3); transition: border-color 0.2s ease; }
+a:hover { border-color: var(--green); }
+code {
+  font-family: var(--mono); font-size: 0.88em;
+  background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 5px; color: var(--fg);
+}
+
+/* ─── Back link ─── */
+.backlink {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: var(--fg-dim);
+  border: none; margin-bottom: 28px;
+}
+.backlink:hover { color: var(--fg); }
+
+/* ─── Diagram cards ─── */
+.diagram {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--r);
+  padding: 28px;
+  margin-top: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.diagram::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 20%, rgba(16, 185, 129, 0.04), transparent 60%);
+  pointer-events: none;
+}
+.caption {
+  font-size: 12px; color: var(--fg-dim); margin-top: 14px; text-align: center;
+  font-style: italic; opacity: 0.85;
+}
+
+/* ─── Scope badges ─── */
+.scope-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.scope-badge.template { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); color: var(--orange); }
+.scope-badge.layout { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.25); color: var(--blue); }
+
+/* ─── Stepper ─── */
+.steps { position: relative; margin-top: 40px; }
+.step {
+  display: flex; gap: 28px;
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.step.visible { opacity: 1; transform: translateY(0); }
+.step-rail { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.step-num {
+  width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 18px; font-weight: 800; color: var(--green);
+  background: radial-gradient(circle at 50% 35%, rgba(16,185,129,0.18), rgba(16,185,129,0.04));
+  border: 1px solid rgba(16,185,129,0.35);
+  box-shadow: 0 0 20px var(--green-glow), inset 0 1px 0 rgba(255,255,255,0.08);
+  z-index: 2;
+}
+.step-line {
+  flex: 1; width: 2px; margin: 8px 0;
+  background: linear-gradient(to bottom, rgba(16,185,129,0.25), var(--card-border));
+  border-radius: 2px;
+}
+.step:last-child .step-line { display: none; }
+.step-body { flex: 1; min-width: 0; padding-bottom: 64px; }
+.step:last-child .step-body { padding-bottom: 0; }
+.step-eyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 8px;
+}
+
+/* ─── Figma canvas mock (Step 1) ─── */
+.canvas {
+  position: relative; border-radius: 12px;
+  background: #08080c;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
+  padding: 28px;
+  display: flex; align-items: center; gap: 28px; flex-wrap: wrap; justify-content: center;
+}
+.frame-sel {
+  position: relative; width: 150px; aspect-ratio: 9/16;
+  border-radius: 8px; overflow: visible;
+  outline: 2px solid var(--blue);
+}
+.frame-sel img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; display: block; }
+.frame-sel .frame-tag {
+  position: absolute; top: -24px; left: 0;
+  font-size: 11px; font-weight: 600; color: var(--blue);
+  background: rgba(59,130,246,0.12); padding: 2px 8px; border-radius: 5px; white-space: nowrap;
+}
+.handle {
+  position: absolute; width: 9px; height: 9px; background: #fff;
+  border: 1.5px solid var(--blue); border-radius: 2px; z-index: 3;
+}
+.handle.tl { top: -5px; left: -5px; } .handle.tr { top: -5px; right: -5px; }
+.handle.bl { bottom: -5px; left: -5px; } .handle.br { bottom: -5px; right: -5px; }
+.assets { display: flex; flex-direction: column; gap: 10px; }
+.assets-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-dim); }
+.asset-row { display: flex; gap: 8px; }
+.asset-thumb {
+  width: 46px; aspect-ratio: 9/16; border-radius: 6px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.asset-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.run-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 20px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--green), #0d9668);
+  color: #04140d; font-weight: 800; font-size: 14px; letter-spacing: 0.02em;
+  box-shadow: 0 8px 24px var(--green-glow);
+  animation: pulse-glow 2.6s ease infinite;
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 8px 24px var(--green-glow); }
+  50% { box-shadow: 0 8px 28px var(--green-glow), 0 0 40px rgba(16,185,129,0.18); }
+}
+
+/* ─── Figma layers panel mock (Steps 2 & 3) ─── */
+.layers {
+  background: #0d0d12; border: 1px solid var(--card-border); border-radius: 10px;
+  padding: 10px; max-width: 380px;
+}
+.layer {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 10px; border-radius: 7px;
+  font-family: var(--mono); font-size: 12.5px; color: var(--fg-dim);
+  border: 1px solid transparent;
+}
+.layer .ic { width: 15px; height: 15px; flex-shrink: 0; }
+.layer.indent { margin-left: 22px; }
+.layer.indent2 { margin-left: 44px; }
+.layer.hl-bg { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.28); color: var(--fg); }
+.layer.hl-bg .name { color: var(--orange); font-weight: 700; }
+.layer.hl-ov { background: rgba(238,127,123,0.1); border-color: rgba(238,127,123,0.25); color: var(--fg); }
+.layer.hl-ov .name { color: var(--salmon); font-weight: 700; }
+.layer.hl-tx .name { color: var(--green); font-weight: 600; }
+.layer .tail {
+  margin-left: auto; font-family: var(--font); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase; color: inherit; opacity: 0.85;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+
+/* ─── Overlay example card (Step 3) ─── */
+.overlay-card {
+  display: flex; align-items: center; gap: 20px; margin-top: 20px;
+  padding: 18px 22px; border-radius: 14px;
+  border: 1px solid rgba(238,127,123,0.15); background: rgba(238,127,123,0.04);
+}
+.overlay-card img { width: 88px; flex-shrink: 0; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5)); }
+
+/* ─── Safe zone comparison (Step 4) ─── */
+.compare { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+.cmp { flex: 1 1 240px; max-width: 320px; }
+.cmp-frame {
+  position: relative; aspect-ratio: 4/5; border-radius: 14px; overflow: hidden;
+  background: linear-gradient(160deg, #14233a, #1d3454);
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.safebox {
+  position: absolute; border: 1.5px dashed rgba(16,185,129,0.55);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 10px;
+}
+.safebox.big { inset: 14px; }
+.safebox.small { left: 14px; right: 14px; bottom: 14px; height: 34%; }
+.sz-label {
+  position: absolute; top: -10px; left: 10px;
+  background: var(--bg); padding: 0 6px;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green);
+}
+.sz-text {
+  font-family: 'Impact', 'Anton', var(--font); font-weight: 800;
+  color: #fff; text-transform: uppercase; line-height: 1.08; letter-spacing: 0.01em;
+}
+.sz-text.lg { font-size: 30px; }
+.sz-text.sm { font-size: 15px; }
+.cmp-cap { text-align: center; margin-top: 12px; font-size: 12.5px; color: var(--fg-dim); }
+.cmp-cap strong { color: var(--fg); }
+
+/* ─── Animation picker (Step 5) ─── */
+.anim-demo { display: flex; gap: 24px; flex-wrap: wrap; }
+.anim-preview { flex: 1 1 200px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.anim-frame {
+  width: 100%; max-width: 240px; aspect-ratio: 1/1; border-radius: 14px;
+  background: linear-gradient(160deg, #0c1b2e, #162a46);
+  border: 1px solid rgba(255,255,255,0.07);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.anim-frame span {
+  font-family: 'Impact', 'Anton', var(--font); font-weight: 800; font-size: 34px;
+  color: #fff; text-transform: uppercase; letter-spacing: 0.02em;
+}
+.anim-selected { font-size: 12px; color: var(--fg-dim); }
+.anim-selected strong { color: var(--green); }
+.anim-list { flex: 1 1 200px; display: flex; flex-direction: column; gap: 8px; }
+.anim-list-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--fg-dim); margin-bottom: 2px;
+}
+.anim-opt {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px; border-radius: 9px; cursor: pointer;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--card-border);
+  color: var(--fg); font-family: var(--font); font-size: 13px; font-weight: 600;
+  text-align: left; transition: border-color 0.2s ease, background 0.2s ease;
+}
+.anim-opt:hover { border-color: rgba(16,185,129,0.3); }
+.anim-opt .check { opacity: 0; color: var(--green); font-weight: 800; }
+.anim-opt.active { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.4); }
+.anim-opt.active .check { opacity: 1; }
+
+/* Animation keyframes for preview */
+@keyframes a-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes a-pop { 0% { opacity: 0; transform: scale(0.4); } 70% { transform: scale(1.12); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes a-slide { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes a-bounce { 0% { opacity: 0; transform: translateY(-60px); } 60% { opacity: 1; transform: translateY(8px); } 80% { transform: translateY(-4px); } 100% { transform: translateY(0); } }
+
+/* ─── Separator ─── */
+.sep { height: 1px; background: linear-gradient(90deg, transparent, var(--card-border), transparent); margin: 64px 0; }
+
+/* ─── Outro ─── */
+.outro {
+  text-align: center; padding: 36px 28px; border-radius: var(--r);
+  border: 1px solid rgba(16,185,129,0.12); background: rgba(16,185,129,0.03);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+  .step { gap: 16px; }
+  .step-num { width: 38px; height: 38px; font-size: 15px; }
+  .canvas { padding: 18px; gap: 18px; }
+  .compare { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ─── Hero ─── -->
+  <section>
+    <a class="backlink" href="index.html">← What is a Template?</a>
+    <div class="hero-badge"><span class="dot"></span> Typpo Figma Plugin</div>
+    <h1>Using the Plugin</h1>
+    <p>You've designed your <a href="index.html">template</a> in Figma — layouts, backgrounds, text, and overlays. Now you'll run it through the Typpo plugin to turn it into animated video. Here's the whole flow, step by step.</p>
+  </section>
+
+  <!-- ─── Steps ─── -->
+  <div class="steps">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-rail"><div class="step-num">1</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-eyebrow">Get started</div>
+        <h2>Select your frames & run the plugin</h2>
+        <p>In Figma, select the <strong>frame</strong> you want to turn into a template — along with any <strong>additional background assets</strong> you want available. Then run the Typpo plugin from <em>Plugins → Typpo</em>. It reads everything in your selection.</p>
+
+        <div class="diagram">
+          <div class="canvas">
+            <div class="frame-sel">
+              <span class="frame-tag">Template Frame</span>
+              <span class="handle tl"></span><span class="handle tr"></span>
+              <span class="handle bl"></span><span class="handle br"></span>
+              <img src="images/train0.png" alt="Selected template frame">
+            </div>
+            <div class="assets">
+              <span class="assets-label">+ Background assets</span>
+              <div class="asset-row">
+                <div class="asset-thumb"><img src="images/train1.png" alt="Background asset 1"></div>
+                <div class="asset-thumb"><img src="images/train2.png" alt="Background asset 2"></div>
+                <div class="asset-thumb"><img src="images/train3.png" alt="Background asset 3"></div>
+              </div>
+              <span class="run-btn">▶ Run Typpo</span>
+            </div>
+          </div>
+          <div class="caption">Select the frame plus any extra backgrounds, then run the plugin.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-rail"><div class="step-num">2</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-eyebrow">The canvas</div>
+        <h2>Group your backgrounds in <code>bg</code></h2>
+        <p>Anything that should be treated as a <strong>background</strong> — the images or colors that sit behind your text — must live inside a group named <code>bg</code>. The plugin imports everything in that group as a background layer and cycles through them.</p>
+        <p>If it's not in <code>bg</code>, it won't be treated as a background.</p>
+
+        <div class="diagram">
+          <div class="layers">
+            <div class="layer">
+              <svg class="ic" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1.5" stroke="#8b8b96" stroke-width="1.3"/></svg>
+              <span class="name">Template Frame</span>
+            </div>
+            <div class="layer indent hl-bg">
+              <svg class="ic" viewBox="0 0 16 16" fill="none"><path d="M2 5.5C2 4.7 2.7 4 3.5 4H6l1.5 1.5h5c.8 0 1.5.7 1.5 1.5v4.5c0 .8-.7 1.5-1.5 1.5h-9C2.7 13 2 12.3 2 11.5v-6Z" stroke="#f59e0b" stroke-width="1.3"/></svg>
+              <span class="name">bg</span>
+              <span class="tail">→ Backgrounds</span>
+            </div>
+            <div class="layer indent2">
+              <svg class="ic" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="#8b8b96" stroke-width="1.3"/><circle cx="6" cy="6.5" r="1.2" stroke="#8b8b96" stroke-width="1.1"/><path d="M3 12l3-3 2.5 2.5L11 8l2 2" stroke="#8b8b96" stroke-width="1.2"/></svg>
+              <span class="name">background-1</span>
+            </div>
+            <div class="layer indent2">
+              <svg class="ic" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="#8b8b96" stroke-width="1.3"/><circle cx="6" cy="6.5" r="1.2" stroke="#8b8b96" stroke-width="1.1"/><path d="M3 12l3-3 2.5 2.5L11 8l2 2" stroke="#8b8b96" stroke-width="1.2"/></svg>
+              <span class="name">background-2</span>
+            </div>
+            <div class="layer indent hl-tx">
+              <svg class="ic" viewBox="0 0 16 16" fill="none"><path d="M4 4h8M8 4v8" stroke="#10b981" stroke-width="1.4" stroke-linecap="round"/></svg>
+              <span class="name">headline-text</span>
+            </div>
+          </div>
+          <div class="caption">Backgrounds go inside the <code>bg</code> group. Text and overlays stay outside it.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-rail"><div class="step-num">3</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-eyebrow">The layers</div>
+        <h2>Keep overlays outside <code>bg</code></h2>
+        <p>Overlays — logos, decorations, watermarks — are elements that float <strong>on top</strong> of the background. To be treated as overlays, they must live <strong>outside</strong> the <code>bg</code> group in your layer structure.</p>
+        <p>Overlays can be <span class="scope-badge layout">◆ Layout scope</span> or <span class="scope-badge template">◆ Template scope</span>, and can have entrance &amp; exit animations — see <a href="index.html">What is a Template?</a> for how scope works.</p>
+
+        <div class="diagram">
+          <div class="layers">
+            <div class="layer">
+              <svg class="ic" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="1.5" stroke="#8b8b96" stroke-width="1.3"/></svg>
+              <span class="name">Template Frame</span>
+            </div>
+            <div class="layer indent hl-ov">
+              <svg class="ic" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="#ee7f7b" stroke-width="1.3"/><circle cx="6" cy="6.5" r="1.2" stroke="#ee7f7b" stroke-width="1.1"/><path d="M3 12l3-3 2.5 2.5L11 8l2 2" stroke="#ee7f7b" stroke-width="1.2"/></svg>
+              <span class="name">logo-overlay</span>
+              <span class="tail">→ Overlay</span>
+            </div>
+            <div class="layer indent">
+              <svg class="ic" viewBox="0 0 16 16" fill="none"><path d="M2 5.5C2 4.7 2.7 4 3.5 4H6l1.5 1.5h5c.8 0 1.5.7 1.5 1.5v4.5c0 .8-.7 1.5-1.5 1.5h-9C2.7 13 2 12.3 2 11.5v-6Z" stroke="#8b8b96" stroke-width="1.3"/></svg>
+              <span class="name">bg</span>
+              <span class="tail" style="opacity:0.5;">grouped</span>
+            </div>
+          </div>
+
+          <div class="overlay-card">
+            <img src="images/bruce_flying_overlay.png" alt="Example overlay">
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: var(--salmon); margin-bottom: 4px;">Example overlay</div>
+              <div style="font-size: 13px; color: var(--fg-dim);">This image sits <strong style="color:var(--fg);">outside</strong> the <code>bg</code> group, so the plugin imports it as an overlay that floats above the background.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <div class="step-rail"><div class="step-num">4</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-eyebrow">The safe zone</div>
+        <h2>Set the text bounding box</h2>
+        <p>The <strong>bounding box of your text layer</strong> in Figma is the <strong>safe zone</strong> — the area Typpo is allowed to fill with text. Whatever size you give that box is the space text will fit into.</p>
+        <p>Make the box <strong>large</strong> and text fills it large. Make it <strong>small</strong> and the text is constrained to fit only that area. Your bounding box <em>is</em> your safe zone.</p>
+
+        <div class="diagram">
+          <div class="compare">
+            <div class="cmp">
+              <div class="cmp-frame">
+                <div class="safebox big">
+                  <span class="sz-label">Safe zone</span>
+                  <span class="sz-text lg">Big box, big text</span>
+                </div>
+              </div>
+              <div class="cmp-cap"><strong>Large box</strong> → text fills the whole area</div>
+            </div>
+            <div class="cmp">
+              <div class="cmp-frame">
+                <div class="safebox small">
+                  <span class="sz-label">Safe zone</span>
+                  <span class="sz-text sm">Small box keeps text tucked here</span>
+                </div>
+              </div>
+              <div class="cmp-cap"><strong>Small box</strong> → text is constrained to fit inside</div>
+            </div>
+          </div>
+          <div class="caption">The dashed box is the bounding box you draw in Figma — text never spills outside it.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step">
+      <div class="step-rail"><div class="step-num">5</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-eyebrow">In the plugin</div>
+        <h2>Choose animations per text</h2>
+        <p>Inside the plugin, <strong>select any text</strong> and you'll be able to pick its <strong>animation</strong> — how it appears on screen as the transcript plays. Each text layer gets its own animation, so you can mix and match across layouts.</p>
+
+        <div class="diagram anim-demo">
+          <div class="anim-preview">
+            <div class="anim-frame"><span id="animWord">HELLO</span></div>
+            <div class="anim-selected">Selected: <strong>headline</strong> text</div>
+          </div>
+          <div class="anim-list">
+            <div class="anim-list-label">Text animation</div>
+            <button class="anim-opt active" data-anim="a-fade">Fade in<span class="check">✓</span></button>
+            <button class="anim-opt" data-anim="a-pop">Pop<span class="check">✓</span></button>
+            <button class="anim-opt" data-anim="a-slide">Slide up<span class="check">✓</span></button>
+            <button class="anim-opt" data-anim="a-bounce">Bounce<span class="check">✓</span></button>
+          </div>
+        </div>
+        <div class="caption">Click an option to preview it. The animations shown here are examples — pick the one you want per text layer in the plugin.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- ─── Outro ─── -->
+  <section>
+    <div class="outro">
+      <h2 style="margin-bottom: 8px;">That's the setup</h2>
+      <p style="margin: 0 auto;">Backgrounds grouped, overlays floating, safe zones set, animations chosen. Run the plugin and Typpo composites it all into video — backgrounds cycling, your transcript animating word-by-word inside the safe zone, overlays riding on top.</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+// Scroll-driven reveal — sections and steps
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('section, .step').forEach(el => observer.observe(el));
+
+// ─── Animation picker (Step 5) ───
+const animWord = document.getElementById('animWord');
+const animOpts = document.querySelectorAll('.anim-opt');
+
+function playAnim(name) {
+  animWord.style.animation = 'none';
+  // force reflow so the animation can re-trigger
+  void animWord.offsetWidth;
+  animWord.style.animation = name + ' 0.7s cubic-bezier(0.22, 1, 0.36, 1) both';
+}
+
+animOpts.forEach(opt => {
+  opt.addEventListener('click', () => {
+    animOpts.forEach(o => o.classList.remove('active'));
+    opt.classList.add('active');
+    playAnim(opt.dataset.anim);
+  });
+});
+
+// Auto-play the active option once the demo scrolls into view
+const animDemo = document.querySelector('.anim-demo');
+if (animDemo) {
+  const animObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const active = document.querySelector('.anim-opt.active');
+        if (active) playAnim(active.dataset.anim);
+      }
+    });
+  }, { threshold: 0.5 });
+  animObserver.observe(animDemo);
+}
+</script>
+</body>
+</html>
