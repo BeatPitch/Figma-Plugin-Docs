@@ -508,8 +508,8 @@ p strong { color: var(--fg); font-weight: 600; }
   <section>
     <div class="hero-badge"><span class="dot"></span> Typpo Figma Plugin</div>
     <h1>What is a Template?</h1>
-    <p>A template is the blueprint that turns your Figma designs into animated video. It defines <strong>how text appears</strong>, <strong>what backgrounds cycle</strong>, and <strong>which overlays persist</strong> — all composed from your Figma frames.</p>
-    <p style="margin-top: 16px;">Once you've built a template, you can <strong>reuse it endlessly</strong> — just swap the script and Typpo renders a fresh video with the same design. New script, same look, instant video. Or use the plugin as a <strong>one-off</strong> to bring a single Figma design to life.</p>
+    <p>A template is the blueprint that turns your Figma designs into animated video. It defines <strong>how text appears</strong>, <strong>what backgrounds cycle</strong>, and <strong>which overlays persist</strong>, all composed from your Figma frames.</p>
+    <p style="margin-top: 16px;">Once you've built a template, you can <strong>reuse it endlessly</strong>: just swap the script and Typpo renders a fresh video with the same design. New script, same look, instant video. Or use the plugin as a <strong>one-off</strong> to bring a single Figma design to life.</p>
 
     <!-- ─── Reuse Demo: Figma board → video → script picker ─── -->
     <div style="margin-top: 40px;">
@@ -517,7 +517,7 @@ p strong { color: var(--fg); font-weight: 600; }
       <!-- Banner: Figma board overview -->
       <div style="border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 24px;">
         <img id="figmaBoardBanner" src="images/figma-board-banner.png" alt="Figma board showing all template layouts" style="width: 100%; display: block;">
-        <div style="padding: 10px 16px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: var(--fg-dim);">Your Figma board — 5 layouts + intro & outro</div>
+        <div style="padding: 10px 16px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: var(--fg-dim);">Your Figma board: 5 layouts + intro & outro</div>
       </div>
 
       <!-- Video player: all videos preloaded, stacked, crossfade on switch -->
@@ -532,7 +532,7 @@ p strong { color: var(--fg); font-weight: 600; }
 
       <!-- Script picker: horizontal scroll -->
       <div style="margin-top: 20px;">
-        <div style="font-size: 11px; font-weight: 600; color: var(--fg-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;">Swap the script — same template, different video</div>
+        <div style="font-size: 11px; font-weight: 600; color: var(--fg-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;">Swap the script: same template, different video</div>
         <div style="display: flex; gap: 12px; overflow-x: auto; padding: 4px 0 12px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
 
           <!-- Script 1 -->
@@ -595,7 +595,7 @@ p strong { color: var(--fg); font-weight: 600; }
   <section>
     <h3 style="color: var(--green);">The Foundation</h3>
     <h2>Text Layouts</h2>
-    <p>Every template is made of one or more <strong>text layouts</strong>. A layout defines the visual skeleton for your text — font, size, color, position, and alignment. When your transcript plays, each group of words is rendered using the next available layout.</p>
+    <p>Every template is made of one or more <strong>text layouts</strong>. A layout defines the visual skeleton for your text: font, size, color, position, and alignment. When your transcript plays, each group of words is rendered using the next available layout.</p>
     <p>If your template has <strong>one layout</strong>, every scene uses it. If it has <strong>multiple layouts</strong>, they cycle based on the template's rules.</p>
 
     <div class="diagram">
@@ -658,7 +658,7 @@ p strong { color: var(--fg); font-weight: 600; }
       </div>
       <div style="flex: 2; min-width: 160px;">
         <h3 style="color: var(--green); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin: 0 0 8px;">Same Layout</h3>
-        <p style="font-size: 13px; color: var(--fg-dim); margin: 0 0 10px;">These two frames have <strong style="color: var(--fg);">identical text styling</strong> — same font, size, color, and position. Only the words and background differ.</p>
+        <p style="font-size: 13px; color: var(--fg-dim); margin: 0 0 10px;">These two frames have <strong style="color: var(--fg);">identical text styling</strong>: same font, size, color, and position. Only the words and background differ.</p>
         <div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--green-dim); border-radius: 8px; border: 1px solid rgba(16,185,129,0.15); font-size: 12px;">
           <span>→</span>
           <span><strong style="color: var(--green);">1 layout</strong> · 2 backgrounds that alternate</span>
@@ -705,7 +705,7 @@ p strong { color: var(--fg); font-weight: 600; }
         <p style="font-size: 13px; color: var(--fg-dim); margin: 0 0 10px;">Same font, but the <strong style="color: var(--fg);">position is different</strong>. Layout 1 places text bottom-left; Layout 2 places it top-left. Any style change makes it a separate layout.</p>
         <div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--purple-glow); border-radius: 8px; border: 1px solid rgba(139,92,246,0.15); font-size: 12px;">
           <span>→</span>
-          <span><strong style="color: var(--purple);">2 layouts</strong> — the template cycles between them</span>
+          <span><strong style="color: var(--purple);">2 layouts</strong>, and the template cycles between them</span>
         </div>
       </div>
     </div>
@@ -758,7 +758,7 @@ p strong { color: var(--fg); font-weight: 600; }
   <section>
     <h3 style="color: var(--salmon);">The Layers</h3>
     <h2>Overlays</h2>
-    <p>Overlays are elements that sit on top of the background — logos, decorations, watermarks. Like backgrounds, they can be <strong>template-scoped</strong> or <strong>layout-scoped</strong>.</p>
+    <p>Overlays are elements that sit on top of the background: logos, decorations, watermarks. Like backgrounds, they can be <strong>template-scoped</strong> or <strong>layout-scoped</strong>.</p>
     <p>Overlays can have <strong>entrance and exit animations</strong> set in the plugin. They must live <strong>outside the <code>bg</code> group</strong> in your Figma layer structure.</p>
 
     <!-- Overlay example image -->
@@ -766,7 +766,7 @@ p strong { color: var(--fg); font-weight: 600; }
       <img src="images/bruce_flying_overlay.png" alt="Bruce Lee flying kick overlay" style="width: 100px; flex-shrink: 0; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));">
       <div>
         <div style="font-size: 13px; font-weight: 700; color: var(--salmon); margin-bottom: 4px;">Example overlay</div>
-        <div style="font-size: 13px; color: var(--fg-dim);">This image lives <strong style="color:var(--fg);">outside</strong> the <code style="font-size: 12px; background: rgba(255,255,255,0.06); padding: 1px 5px; border-radius: 4px;">bg</code> group in Figma. The plugin imports it as an overlay that floats on top of the background — with optional entrance and exit animations.</div>
+        <div style="font-size: 13px; color: var(--fg-dim);">This image lives <strong style="color:var(--fg);">outside</strong> the <code style="font-size: 12px; background: rgba(255,255,255,0.06); padding: 1px 5px; border-radius: 4px;">bg</code> group in Figma. The plugin imports it as an overlay that floats on top of the background, with optional entrance and exit animations.</div>
       </div>
     </div>
 
@@ -804,8 +804,8 @@ p strong { color: var(--fg); font-weight: 600; }
   <section>
     <h3 style="color: var(--green);">The Star</h3>
     <h2>Anchor Text</h2>
-    <p>Every layout has one <strong>anchor text</strong> — the text layer that gets replaced by your transcript at runtime. It's the text Typpo animates word-by-word as your audio plays.</p>
-    <p>If your Figma frame has multiple text layers, the plugin asks which one is the anchor. The rest become <strong>static overlays</strong> — baked as images that ride on top of the background.</p>
+    <p>Every layout has one <strong>anchor text</strong>: the text layer that gets replaced by your transcript at runtime. It's the text Typpo animates word-by-word as your audio plays.</p>
+    <p>If your Figma frame has multiple text layers, the plugin asks which one is the anchor. The rest become <strong>static overlays</strong>, baked as images that ride on top of the background.</p>
 
     <!-- Animated preview: centered with annotation arrow -->
     <div style="display: flex; flex-direction: column; align-items: center; margin: 28px 0; position: relative;">
@@ -839,13 +839,13 @@ p strong { color: var(--fg); font-weight: 600; }
             <path d="M32 10 L6 10" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4 3"/>
             <path d="M10 4 L2 10 L10 16" stroke="#10b981" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <div style="font-size: 11px; font-weight: 600; color: var(--green); letter-spacing: 0.04em; white-space: nowrap;" id="anchorArrowLabel">Anchor — replaced by transcript</div>
+          <div style="font-size: 11px; font-weight: 600; color: var(--green); letter-spacing: 0.04em; white-space: nowrap;" id="anchorArrowLabel">Anchor: replaced by transcript</div>
         </div>
 
         <!-- Legend below -->
         <div style="display: flex; gap: 14px; margin-top: 14px; justify-content: center;">
-          <div style="display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--fg-dim);"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block;"></span> Anchor — replaced</div>
-          <div style="display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--fg-dim);"><span style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); display: inline-block;"></span> Static — frozen</div>
+          <div style="display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--fg-dim);"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block;"></span> Anchor: replaced</div>
+          <div style="display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--fg-dim);"><span style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); display: inline-block;"></span> Static: frozen</div>
         </div>
       </div>
 
@@ -856,11 +856,11 @@ p strong { color: var(--fg); font-weight: 600; }
       <div style="display: flex; gap: 32px; flex-wrap: wrap;">
         <div style="flex: 1; min-width: 180px;">
           <div style="font-size: 12px; font-weight: 700; color: var(--green); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;">Anchor text</div>
-          <p style="font-size: 13px; color: var(--fg-dim); margin: 0;">The big text in the center is the <strong style="color: var(--fg);">anchor</strong>. Typpo replaces it with your transcript — word by word, as the audio plays.</p>
+          <p style="font-size: 13px; color: var(--fg-dim); margin: 0;">The big text in the center is the <strong style="color: var(--fg);">anchor</strong>. Typpo replaces it with your transcript, word by word, as the audio plays.</p>
         </div>
         <div style="flex: 1; min-width: 180px;">
           <div style="font-size: 12px; font-weight: 700; color: var(--fg-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;">Static overlays</div>
-          <p style="font-size: 13px; color: var(--fg-dim); margin: 0;">The tagline and watermark are <strong style="color: var(--fg);">not</strong> the anchor. They get baked as images and stay frozen — visible but never replaced.</p>
+          <p style="font-size: 13px; color: var(--fg-dim); margin: 0;">The tagline and watermark are <strong style="color: var(--fg);">not</strong> the anchor. They get baked as images and stay frozen, visible but never replaced.</p>
         </div>
         <div style="flex: 1; min-width: 180px;">
           <div style="font-size: 12px; font-weight: 700; color: var(--fg-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;">Multiple text layers?</div>
@@ -876,7 +876,7 @@ p strong { color: var(--fg); font-weight: 600; }
   <section>
     <h3 style="color: var(--fg-dim);">The Big Picture</h3>
     <h2>How It All Fits</h2>
-    <p><strong>Backgrounds</strong>, <strong>layouts</strong>, and <strong>overlays</strong> come together to make a template. When it plays, they all work in sync — backgrounds cycle, the anchor text animates word-by-word through your transcript, and overlays ride above.</p>
+    <p><strong>Backgrounds</strong>, <strong>layouts</strong>, and <strong>overlays</strong> come together to make a template. When it plays, they all work in sync: backgrounds cycle, the anchor text animates word-by-word through your transcript, and overlays ride above.</p>
 
     <!-- Exploded view: 3 cards on top → collapse into large template below -->
     <div id="explodedView" style="margin: 40px 0;">
@@ -1020,7 +1020,7 @@ function animateLayouts() {
 animateLayouts();
 
 // ─── Anchor text: click any text layer to make it the anchor ───
-// Each line is a scene — words appear one by one, then the group clears and the next plays.
+// Each line is a scene: words appear one by one, then the group clears and the next plays.
 const anchorScenes = [
   ['Hello', 'welcome', 'to', 'Typpo', 'w/', 'Figma.'],
   ['We', 'are', 'excited', 'to', 'have', 'you', 'here'],
@@ -1176,7 +1176,7 @@ document.querySelectorAll('[data-video-sync-group]').forEach(group => {
       function check() {
         readyCount++;
         if (readyCount === videos.length) {
-          // All ready — start them on the same animation frame
+          // All ready: start them on the same animation frame
           requestAnimationFrame(() => {
             videos.forEach(vid => vid.play());
           });

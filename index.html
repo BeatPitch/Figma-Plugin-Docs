@@ -28,7 +28,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* B · Dark cinematic — deep black radial glow */
+/* B · Dark cinematic: deep black radial glow */
 body {
   min-height: 100vh;
   background: radial-gradient(900px 600px at 50% 18%, #2A2A2C 0%, #0E0E10 62%);
@@ -68,7 +68,7 @@ body {
   pointer-events: none;
 }
 
-/* Logo handoff — Figma → typpo */
+/* Logo handoff: Figma → typpo */
 .logos {
   display: flex;
   align-items: center;
@@ -85,7 +85,7 @@ body {
 }
 .arrow { display: block; width: 140px; height: 56px; overflow: visible; flex-shrink: 0; }
 
-/* Eyebrow — Montserrat SemiBold, tracked caps */
+/* Eyebrow: Montserrat SemiBold, tracked caps */
 .eyebrow {
   font-family: var(--font-display);
   font-weight: 600;
@@ -95,7 +95,7 @@ body {
   text-transform: uppercase;
 }
 
-/* Headline — Major Mono, giant spaced caps */
+/* Headline: Major Mono, giant spaced caps */
 .headline {
   font-family: var(--font-app);
   font-weight: 400;
@@ -138,9 +138,9 @@ body {
   transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
 .promo-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--salmon);
-  box-shadow: 0 26px 60px -28px rgba(238,127,123,0.42);
+  transform: translateY(-4px);
+  border-color: rgba(238,127,123,0.5);
+  box-shadow: 0 20px 44px -22px rgba(0,0,0,0.7);
 }
 
 /* Real preview pulled from the destination page */
@@ -159,11 +159,14 @@ body {
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.45s ease;
+  /* The real preview sits muted at rest, then wakes up on hover */
+  filter: brightness(0.82) saturate(0.88);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
 }
 .promo-card:hover .promo-media img,
 .promo-card:hover .promo-media video {
   transform: scale(1.05);
+  filter: brightness(1.04) saturate(1.08);
 }
 .promo-media::after {
   content: "";
@@ -217,10 +220,11 @@ body {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 13.5px;
-  transition: gap 0.2s ease;
+  transition: background-color 0.2s ease;
 }
-.promo-card:hover .promo-cta { gap: 12px; }
-.promo-cta .arrow-i { font-size: 15px; line-height: 1; }
+.promo-card:hover .promo-cta { background: #f2918d; }
+.promo-cta .arrow-i { font-size: 15px; line-height: 1; transition: transform 0.25s ease; }
+.promo-card:hover .promo-cta .arrow-i { transform: translateX(4px); }
 
 /* ─── Entrance animation ─── */
 @keyframes riseIn {
@@ -239,6 +243,9 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .logos, .eyebrow, .headline, .lede, .promo-card { animation: none; }
+  .promo-media img, .promo-media video,
+  .promo-card:hover .promo-media img, .promo-card:hover .promo-media video,
+  .promo-cta .arrow-i, .promo-card:hover .promo-cta .arrow-i { transform: none; }
 }
 
 /* ─── Responsive ─── */
