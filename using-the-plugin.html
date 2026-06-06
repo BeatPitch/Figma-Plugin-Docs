@@ -155,53 +155,6 @@ code {
   color: var(--green); margin-bottom: 8px;
 }
 
-/* ─── Figma canvas mock (Step 1) ─── */
-.canvas {
-  position: relative; border-radius: 12px;
-  background: #08080c;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
-  background-size: 22px 22px;
-  padding: 28px;
-  display: flex; align-items: center; gap: 28px; flex-wrap: wrap; justify-content: center;
-}
-.frame-sel {
-  position: relative; width: 150px; aspect-ratio: 9/16;
-  border-radius: 8px; overflow: visible;
-  outline: 2px solid var(--blue);
-}
-.frame-sel img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; display: block; }
-.frame-sel .frame-tag {
-  position: absolute; top: -24px; left: 0;
-  font-size: 11px; font-weight: 600; color: var(--blue);
-  background: rgba(59,130,246,0.12); padding: 2px 8px; border-radius: 5px; white-space: nowrap;
-}
-.handle {
-  position: absolute; width: 9px; height: 9px; background: #fff;
-  border: 1.5px solid var(--blue); border-radius: 2px; z-index: 3;
-}
-.handle.tl { top: -5px; left: -5px; } .handle.tr { top: -5px; right: -5px; }
-.handle.bl { bottom: -5px; left: -5px; } .handle.br { bottom: -5px; right: -5px; }
-.assets { display: flex; flex-direction: column; gap: 10px; }
-.assets-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-dim); }
-.asset-row { display: flex; gap: 8px; }
-.asset-thumb {
-  width: 46px; aspect-ratio: 9/16; border-radius: 6px; overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-.asset-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.run-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 20px; border-radius: 10px;
-  background: linear-gradient(135deg, var(--green), #0d9668);
-  color: #04140d; font-weight: 800; font-size: 14px; letter-spacing: 0.02em;
-  box-shadow: 0 8px 24px var(--green-glow);
-  animation: pulse-glow 2.6s ease infinite;
-}
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 8px 24px var(--green-glow); }
-  50% { box-shadow: 0 8px 28px var(--green-glow), 0 0 40px rgba(16,185,129,0.18); }
-}
-
 /* ─── Figma layers panel mock (Steps 2 & 3) ─── */
 .layers {
   background: #0d0d12; border: 1px solid var(--card-border); border-radius: 10px;
@@ -227,7 +180,7 @@ code {
   display: inline-flex; align-items: center; gap: 5px;
 }
 
-/* ─── Overlay example card (Step 3) ─── */
+/* ─── Overlay example card ─── */
 .overlay-card {
   display: flex; align-items: center; gap: 20px; margin-top: 20px;
   padding: 18px 22px; border-radius: 14px;
@@ -235,7 +188,7 @@ code {
 }
 .overlay-card img { width: 88px; flex-shrink: 0; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5)); }
 
-/* ─── Safe zone comparison (Step 4) ─── */
+/* ─── Safe zone comparison ─── */
 .compare { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
 .cmp { flex: 1 1 240px; max-width: 320px; }
 .cmp-frame {
@@ -314,6 +267,20 @@ code {
 .ref-desc { font-size: 13px; color: var(--fg-dim); }
 .ref-arrow { margin-left: auto; font-size: 22px; color: var(--green); flex-shrink: 0; }
 
+/* ─── Good to Know info items ─── */
+.info-list { margin-top: 36px; }
+.info-item { margin-bottom: 64px; }
+.info-item:last-child { margin-bottom: 0; }
+.info-eyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.info-title {
+  font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.01em;
+  text-transform: none; line-height: 1.25; margin-bottom: 12px;
+}
+.info-title code { font-size: 0.82em; }
+
 /* ─── Separator ─── */
 .sep { height: 1px; background: linear-gradient(90deg, transparent, var(--card-border), transparent); margin: 64px 0; }
 
@@ -387,46 +354,73 @@ code {
       </div>
     </div>
 
-    <!-- Step 3 -->
+    <!-- Step 3: Select & run -->
     <div class="step">
       <div class="step-rail"><div class="step-num">3</div><div class="step-line"></div></div>
       <div class="step-body">
         <div class="step-eyebrow">Import</div>
-        <h2>Select your frames & run the plugin</h2>
+        <h2>Select your frames &amp; run the plugin</h2>
         <p>In Figma, select the <strong>frame</strong> you want to turn into a template — along with any <strong>additional background assets</strong> you want available. Then run the Typpo plugin from <em>Plugins → Typpo</em>. It reads everything in your selection.</p>
 
         <div class="diagram">
-          <div class="canvas">
-            <div class="frame-sel">
-              <span class="frame-tag">Template Frame</span>
-              <span class="handle tl"></span><span class="handle tr"></span>
-              <span class="handle bl"></span><span class="handle br"></span>
-              <img src="images/train0.png" alt="Selected template frame">
-            </div>
-            <div class="assets">
-              <span class="assets-label">+ Background assets</span>
-              <div class="asset-row">
-                <div class="asset-thumb"><img src="images/train1.png" alt="Background asset 1"></div>
-                <div class="asset-thumb"><img src="images/train2.png" alt="Background asset 2"></div>
-                <div class="asset-thumb"><img src="images/train3.png" alt="Background asset 3"></div>
-              </div>
-              <span class="run-btn">▶ Run Typpo</span>
-            </div>
+          <div class="video-wrap">
+            <video src="videos/select_frames_run_plugin.mp4" autoplay loop muted playsinline preload="metadata"></video>
           </div>
           <div class="caption">Select the frame plus any extra backgrounds, then run the plugin.</div>
         </div>
       </div>
     </div>
 
-    <!-- Step 4 -->
+    <!-- Step 4: Download template -->
     <div class="step">
       <div class="step-rail"><div class="step-num">4</div><div class="step-line"></div></div>
       <div class="step-body">
-        <div class="step-eyebrow">The canvas</div>
-        <h2>Group your backgrounds in <code>bg</code></h2>
+        <div class="step-eyebrow">Export</div>
+        <h2>Download your template</h2>
+        <p>When everything's set, <strong>download your template</strong> from the plugin. Typpo packages up your layouts, backgrounds, overlays, and animations into a single template — ready to bring into the app.</p>
+
+        <div class="diagram">
+          <div class="video-wrap">
+            <video src="videos/download_template.mp4" autoplay loop muted playsinline preload="metadata"></video>
+          </div>
+          <div class="caption">Export your finished template straight from the plugin.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5: Drop into Typpo -->
+    <div class="step">
+      <div class="step-rail"><div class="step-num">5</div><div class="step-line"></div></div>
+      <div class="step-body">
+        <div class="step-eyebrow">In Typpo</div>
+        <h2>Drop it into Typpo</h2>
+        <p>Open Typpo and <strong>drop in your template</strong>. That's it — it's ready to generate video from your transcript, with your text animating word-by-word inside the safe zone.</p>
+
+        <div class="diagram">
+          <div class="video-wrap">
+            <video src="videos/drop_to_typpo.mp4" autoplay loop muted playsinline preload="metadata"></video>
+          </div>
+          <div class="caption">Drop your downloaded template into Typpo to start creating.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- ─── Good to Know ─── -->
+  <section>
+    <h3 style="color: var(--green); font-size: 18px;">Good to Know</h3>
+
+    <div class="info-list">
+
+      <!-- Backgrounds -->
+      <div class="info-item">
+        <div class="info-eyebrow" style="color: var(--orange);">The canvas</div>
+        <h3 class="info-title">Group your backgrounds in <code>bg</code></h3>
         <p>Anything that should be treated as a <strong>background</strong> — the images or colors that sit behind your text — must live inside a group named <code>bg</code>. The plugin imports everything in that group as a background layer and cycles through them.</p>
         <p>If it's not in <code>bg</code>, it won't be treated as a background.</p>
-
         <div class="diagram">
           <div class="shot">
             <img src="images/bg_setup.png" alt="Figma layers panel showing backgrounds grouped inside a bg group">
@@ -434,17 +428,13 @@ code {
           <div class="caption">Backgrounds go inside the <code>bg</code> group. Text and overlays stay outside it.</div>
         </div>
       </div>
-    </div>
 
-    <!-- Step 5 -->
-    <div class="step">
-      <div class="step-rail"><div class="step-num">5</div><div class="step-line"></div></div>
-      <div class="step-body">
-        <div class="step-eyebrow">The layers</div>
-        <h2>Keep overlays outside <code>bg</code></h2>
+      <!-- Overlays -->
+      <div class="info-item">
+        <div class="info-eyebrow" style="color: var(--salmon);">The layers</div>
+        <h3 class="info-title">Keep overlays outside <code>bg</code></h3>
         <p>Overlays — logos, decorations, watermarks — are elements that float <strong>on top</strong> of the background. To be treated as overlays, they must live <strong>outside</strong> the <code>bg</code> group in your layer structure.</p>
         <p>Overlays can be <span class="scope-badge layout">◆ Layout scope</span> or <span class="scope-badge template">◆ Template scope</span>, and can have entrance &amp; exit animations — see <a href="what-is-a-template.html">What is a Template?</a> for how scope works.</p>
-
         <div class="diagram">
           <div class="shot">
             <img src="images/overlay_setup.png" alt="Figma layers panel showing an overlay layer outside the bg group">
@@ -459,17 +449,13 @@ code {
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Step 6 -->
-    <div class="step">
-      <div class="step-rail"><div class="step-num">6</div><div class="step-line"></div></div>
-      <div class="step-body">
-        <div class="step-eyebrow">The safe zone</div>
-        <h2>Set the text bounding box</h2>
+      <!-- Safe zone -->
+      <div class="info-item">
+        <div class="info-eyebrow" style="color: var(--green);">The safe zone</div>
+        <h3 class="info-title">Set the text bounding box</h3>
         <p>The <strong>bounding box of your text layer</strong> in Figma is the <strong>safe zone</strong> — the area Typpo is allowed to fill with text. Whatever size you give that box is the space text will fit into.</p>
         <p>Make the box <strong>large</strong> and text fills it large. Make it <strong>small</strong> and the text is constrained to fit only that area. Your bounding box <em>is</em> your safe zone.</p>
-
         <div class="diagram">
           <div class="compare">
             <div class="cmp">
@@ -494,16 +480,12 @@ code {
           <div class="caption">The dashed box is the bounding box you draw in Figma — text never spills outside it.</div>
         </div>
       </div>
-    </div>
 
-    <!-- Step 7 -->
-    <div class="step">
-      <div class="step-rail"><div class="step-num">7</div><div class="step-line"></div></div>
-      <div class="step-body">
-        <div class="step-eyebrow">In the plugin</div>
-        <h2>Add animations to text &amp; overlays</h2>
+      <!-- Animations -->
+      <div class="info-item">
+        <div class="info-eyebrow" style="color: var(--blue);">In the plugin</div>
+        <h3 class="info-title">Add animations to text &amp; overlays</h3>
         <p>Inside the plugin, <strong>select any text or overlay</strong> and choose how it animates on screen as the video plays. Each layer gets its own animation, so you can mix and match across your layouts.</p>
-
         <div class="diagram">
           <div class="dual">
             <div class="dual-item">
@@ -517,17 +499,17 @@ code {
           </div>
         </div>
       </div>
-    </div>
 
-  </div>
+    </div>
+  </section>
 
   <div class="sep"></div>
 
   <!-- ─── Outro ─── -->
   <section>
     <div class="outro">
-      <h2 style="margin-bottom: 8px;">That's the setup</h2>
-      <p style="margin: 0 auto;">Backgrounds grouped, overlays floating, safe zones set, animations chosen. Run the plugin and Typpo composites it all into video — backgrounds cycling, your transcript animating word-by-word inside the safe zone, overlays riding on top.</p>
+      <h2 style="margin-bottom: 8px;">That's it</h2>
+      <p style="margin: 0 auto;">Five steps from install to Typpo. With your backgrounds grouped, overlays floating, safe zone set, and animations chosen, your template's ready to generate video — your transcript animating word-by-word as the audio plays.</p>
     </div>
   </section>
 

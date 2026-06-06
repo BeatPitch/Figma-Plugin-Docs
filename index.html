@@ -11,9 +11,9 @@
 /* ─── Typpo design tokens (from typpo.css) ─── */
 :root {
   --salmon: #EE7F7B;
+  --salmon-soft: rgba(238,127,123,0.16);
   --fg-on-dark: #FFFFFF;
   --fg-unselected: #A4A496;
-  --bg-card-dark: #1D1D1D;
   --card-border: #2A2A2C;
   --font-app: "Major Mono Display", ui-monospace, monospace;
   --font-display: "Montserrat", -apple-system, "SF Pro", system-ui, sans-serif;
@@ -31,17 +31,17 @@ html, body {
 /* B · Dark cinematic — deep black radial glow */
 body {
   min-height: 100vh;
-  background: radial-gradient(900px 600px at 50% 20%, #2A2A2C 0%, #0E0E10 65%);
+  background: radial-gradient(900px 600px at 50% 18%, #2A2A2C 0%, #0E0E10 62%);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 48px 56px;
+  padding: 56px;
   overflow-x: hidden;
 }
 
 .welcome {
   width: 100%;
-  max-width: 988px;
+  max-width: 980px;
   margin: 0 auto;
   position: relative;
 }
@@ -60,8 +60,9 @@ body {
 .glow {
   position: absolute;
   width: 460px;
+  max-width: 90%;
   height: 220px;
-  top: -6%;
+  top: -8%;
   background: radial-gradient(ellipse at center, rgba(238,127,123,0.18) 0%, transparent 70%);
   filter: blur(6px);
   pointer-events: none;
@@ -82,9 +83,9 @@ body {
   border-radius: 22px;
   box-shadow: 0 18px 40px -16px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.06);
 }
-.arrow { display: block; overflow: visible; }
+.arrow { display: block; width: 140px; height: 56px; overflow: visible; flex-shrink: 0; }
 
-/* Eyebrow — Montserrat SemiBold, tracked caps (legibility edit) */
+/* Eyebrow — Montserrat SemiBold, tracked caps */
 .eyebrow {
   font-family: var(--font-display);
   font-weight: 600;
@@ -98,112 +99,164 @@ body {
 .headline {
   font-family: var(--font-app);
   font-weight: 400;
-  font-size: clamp(56px, 11vw, 100px);
-  line-height: 0.94;
+  font-size: clamp(40px, 12vw, 92px);
+  line-height: 0.98;
   color: #fff;
   margin-top: 14px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
 .lede {
-  margin-top: 18px;
+  margin-top: 22px;
   font-family: var(--font-display);
   font-size: 16px;
   color: var(--fg-unselected);
-  max-width: 520px;
-  line-height: 1.55;
+  max-width: 560px;
+  line-height: 1.6;
 }
 
-/* ─── Cards ─── */
+/* ─── Promo cards (two-up) ─── */
 .cards {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 12px;
-  margin-top: 40px;
-  position: relative;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-top: 52px;
 }
 
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: var(--bg-card-dark);
-  border: 1px solid var(--card-border);
-  border-radius: 14px;
-  padding: 18px 18px 16px;
-  text-decoration: none;
-  color: #fff;
-  transition: border-color 0.15s ease, background 0.15s ease;
+.promo-card {
   position: relative;
   overflow: hidden;
-}
-.card:hover { border-color: var(--salmon); background: #222; }
-
-.card-top {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  background: linear-gradient(160deg, #1b1b1f 0%, #141416 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 0;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
-.card-num {
-  font-family: var(--font-app);
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  color: var(--salmon);
-  text-transform: uppercase;
-}
-.card-cat {
-  font-family: var(--font-app);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  color: #666;
-  text-transform: uppercase;
+.promo-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--salmon);
+  box-shadow: 0 26px 60px -28px rgba(238,127,123,0.42);
 }
 
-.card-title {
+/* Real preview pulled from the destination page */
+.promo-media {
+  position: relative;
+  width: 100%;
+  height: 156px;
+  overflow: hidden;
+  background: #0d0d10;
+  flex-shrink: 0;
+}
+.promo-media img,
+.promo-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.45s ease;
+}
+.promo-card:hover .promo-media img,
+.promo-card:hover .promo-media video {
+  transform: scale(1.05);
+}
+.promo-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 55%, rgba(20,20,22,0.6));
+  pointer-events: none;
+}
+.promo-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 24px 28px 26px;
+}
+.promo-kicker {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 17px;
-  color: #fff;
-  margin-top: 2px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--salmon);
+  margin-bottom: 10px;
 }
-.card-body {
-  font-size: 13px;
-  color: var(--fg-unselected);
-  line-height: 1.5;
-}
-
-.card-foot {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--card-border);
+.promo-title {
   font-family: var(--font-display);
-  font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 23px;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
   color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
-.card-foot .chev {
-  width: 26px;
-  height: 26px;
+.promo-desc {
+  font-size: 14px;
+  color: var(--fg-unselected);
+  line-height: 1.55;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  max-width: 40ch;
+}
+.promo-cta {
+  margin-top: auto;
+  width: fit-content;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
   border-radius: 9999px;
   background: var(--salmon);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  flex-shrink: 0;
+  color: #2a0d0c;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13.5px;
+  transition: gap 0.2s ease;
+}
+.promo-card:hover .promo-cta { gap: 12px; }
+.promo-cta .arrow-i { font-size: 15px; line-height: 1; }
+
+/* ─── Entrance animation ─── */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.logos, .eyebrow, .headline, .lede, .promo-card {
+  animation: riseIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.logos       { animation-delay: 0.00s; }
+.eyebrow     { animation-delay: 0.08s; }
+.headline    { animation-delay: 0.14s; }
+.lede        { animation-delay: 0.22s; }
+.promo-card:nth-child(1) { animation-delay: 0.32s; }
+.promo-card:nth-child(2) { animation-delay: 0.40s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .logos, .eyebrow, .headline, .lede, .promo-card { animation: none; }
 }
 
 /* ─── Responsive ─── */
 @media (max-width: 720px) {
-  body { padding: 40px 22px; }
-  .cards { grid-template-columns: 1fr; }
-  .logos img { width: 84px; height: 84px; }
-  .glow { width: 320px; }
+  body { padding: 48px 20px; justify-content: flex-start; }
+  .logos { gap: 12px; margin-bottom: 24px; }
+  .logos img { width: 76px; height: 76px; border-radius: 18px; }
+  .arrow { width: 96px; height: 44px; }
+  .lede { font-size: 15px; margin-top: 18px; }
+  .cards { grid-template-columns: 1fr; gap: 14px; margin-top: 38px; }
+  .promo-media { height: 150px; }
+  .promo-body { padding: 22px 22px 24px; }
+  .promo-title { font-size: 21px; }
+}
+@media (max-width: 400px) {
+  body { padding: 40px 16px; }
+  .logos img { width: 64px; height: 64px; }
+  .arrow { width: 74px; height: 38px; }
 }
 </style>
 </head>
@@ -231,50 +284,35 @@ body {
         <img src="images/typpo-logo.png" alt="typpo" width="104" height="104">
       </div>
 
-      <div class="eyebrow">figma &times; typpo</div>
-      <h1 class="headline">installed.</h1>
-      <p class="lede">Your captions live where your designs do now. Three short reads to get the first clip out the door.</p>
+      <div class="eyebrow">now live in figma</div>
+      <h1 class="headline">design once.<br>reuse forever.</h1>
+      <p class="lede">One template carries your whole look: type, motion, and backgrounds, locked together. Hand it a new script and Typpo renders a fresh captioned video that matches beat for beat. Set it up once, then run it forever.</p>
     </section>
 
-    <!-- ─── Cards ─── -->
+    <!-- ─── Promo cards ─── -->
     <section class="cards">
 
-      <a class="card" href="what-is-a-template.html">
-        <div class="card-top">
-          <span class="card-num">01</span>
-          <span class="card-cat">concept</span>
+      <a class="promo-card" href="what-is-a-template.html">
+        <div class="promo-media">
+          <img src="images/figma-board-banner.png" alt="Template layouts laid out on a Figma board" loading="lazy">
         </div>
-        <div class="card-title">What is a template?</div>
-        <p class="card-body">A text style + animation + background, bundled. Pick one, tweak it, ship a clip in under a minute.</p>
-        <div class="card-foot">
-          <span>Read the primer</span>
-          <span class="chev">&rarr;</span>
-        </div>
-      </a>
-
-      <a class="card" href="#">
-        <div class="card-top">
-          <span class="card-num">02</span>
-          <span class="card-cat">auth</span>
-        </div>
-        <div class="card-title">Sign in to typpo</div>
-        <p class="card-body">Keep credits and projects in sync across devices. Sign in with Apple or Google.</p>
-        <div class="card-foot">
-          <span>Open sign-in guide</span>
-          <span class="chev">&rarr;</span>
+        <div class="promo-body">
+          <div class="promo-kicker">Start here</div>
+          <div class="promo-title">What's a template?</div>
+          <p class="promo-desc">The reusable bundle behind every clip. See what goes inside one, and how to bend it to your brand.</p>
+          <div class="promo-cta">GO <span class="arrow-i">&rarr;</span></div>
         </div>
       </a>
 
-      <a class="card" href="using-the-plugin.html">
-        <div class="card-top">
-          <span class="card-num">03</span>
-          <span class="card-cat">setup</span>
+      <a class="promo-card" href="using-the-plugin.html">
+        <div class="promo-media">
+          <video src="videos/select_frames_run_plugin.mp4" autoplay loop muted playsinline></video>
         </div>
-        <div class="card-title">Finish installing</div>
-        <p class="card-body">Pin the plug-in, grant clipboard access, and you're set. Three quick steps.</p>
-        <div class="card-foot">
-          <span>Show me how</span>
-          <span class="chev">&rarr;</span>
+        <div class="promo-body">
+          <div class="promo-kicker">The workflow</div>
+          <div class="promo-title">How to use the plugin</div>
+          <p class="promo-desc">Your selection goes in, a finished captioned video comes out. Here's the whole flow, step by step.</p>
+          <div class="promo-cta">GO <span class="arrow-i">&rarr;</span></div>
         </div>
       </a>
 
