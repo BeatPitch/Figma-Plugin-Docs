@@ -195,14 +195,16 @@ code {
   position: relative; aspect-ratio: 4/5; border-radius: 14px; overflow: hidden;
   background: linear-gradient(160deg, #14233a, #1d3454);
   border: 1px solid rgba(255,255,255,0.07);
+  display: flex; align-items: center; justify-content: center; padding: 22px;
 }
+/* The dashed box hugs only the words it can hold */
 .safebox {
-  position: absolute; border: 1.5px dashed rgba(16,185,129,0.55);
-  border-radius: 8px; display: flex; align-items: center; justify-content: center;
-  text-align: center; padding: 10px;
+  position: relative; border: 1.5px dashed rgba(16,185,129,0.55);
+  border-radius: 8px; padding: 20px 16px; text-align: center;
 }
-.safebox.big { inset: 14px; }
-.safebox.small { left: 14px; right: 14px; bottom: 14px; height: 34%; }
+.safebox.big   { width: 100%; }
+.safebox.small { width: 76%; }
+.sz-stack { display: flex; flex-direction: column; align-items: center; width: 100%; position: relative; z-index: 2; }
 .sz-label {
   position: absolute; top: -10px; left: 10px;
   background: var(--bg); padding: 0 6px;
@@ -211,9 +213,40 @@ code {
 .sz-text {
   font-family: 'Impact', 'Anton', var(--font); font-weight: 800;
   color: #fff; text-transform: uppercase; line-height: 1.08; letter-spacing: 0.01em;
+  font-size: 19px;
 }
-.sz-text.lg { font-size: 30px; }
-.sz-text.sm { font-size: 15px; }
+/* Overflow words: same size, spilled outside the box and dropped (never shrunk) */
+.dropped { width: 76%; margin: 12px auto 0; text-align: center; }
+.dropped-words {
+  font-family: 'Impact', 'Anton', var(--font); font-weight: 800; text-transform: uppercase;
+  font-size: 19px; line-height: 1.12; letter-spacing: 0.01em;
+  color: rgba(255,255,255,0.28);
+  text-decoration: line-through; text-decoration-color: rgba(238,127,123,0.9); text-decoration-thickness: 2px;
+}
+.drop-label {
+  display: block; margin-bottom: 6px;
+  font-family: var(--font); font-size: 9px; font-weight: 800; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--salmon);
+}
+/* Restricted design areas (logo, watermark) the safe zone steers text clear of */
+.rz-logo {
+  position: absolute; top: 12px; right: 12px; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 3px; pointer-events: none;
+}
+.rz-logo img {
+  width: 30px; height: 30px; border-radius: 7px; display: block;
+  filter: grayscale(1) brightness(1.4); opacity: 0.32;
+}
+.rz-tag {
+  font-family: var(--font); font-size: 7.5px; font-weight: 800; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.32);
+}
+.rz-wm {
+  position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 1;
+  font-family: var(--font); font-size: 12px; font-weight: 800;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.15); white-space: nowrap; pointer-events: none;
+}
 .cmp-cap { text-align: center; margin-top: 12px; font-size: 12.5px; color: var(--fg-dim); }
 .cmp-cap strong { color: var(--fg); }
 
@@ -321,13 +354,13 @@ code {
       <div class="step-body">
         <div class="step-eyebrow">Setup</div>
         <h2>Install the plugin</h2>
-        <p>Open Figma and find <strong>Typpo</strong> in the Community. Hit <strong>Install</strong>, and it'll be available under <em>Plugins → Typpo</em> in any file you open.</p>
+        <p>In Figma, open <em>Plugins → Development → Import plugin from manifest…</em> and choose Typpo's <code>manifest.json</code>. Once imported, it'll be available under <em>Plugins → Development → Typpo Template Export</em> in any file you open.</p>
 
         <div class="diagram">
           <div class="video-wrap">
             <video src="videos/how_to_install.MP4" autoplay loop muted playsinline preload="metadata"></video>
           </div>
-          <div class="caption">Install once from the Figma Community, then run it from the Plugins menu anytime.</div>
+          <div class="caption">Import the plugin once from its manifest, then run it from <em>Plugins → Development</em> anytime.</div>
         </div>
       </div>
     </div>
@@ -361,7 +394,7 @@ code {
       <div class="step-body">
         <div class="step-eyebrow">Import</div>
         <h2>Select your frames &amp; run the plugin</h2>
-        <p>In Figma, select the <strong>frame</strong> you want to turn into a template, along with any <strong>additional background assets</strong> you want available. Then run the Typpo plugin from <em>Plugins → Typpo</em>. It reads everything in your selection.</p>
+        <p>In Figma, select the <strong>frame</strong> you want to turn into a template, along with any <strong>additional background assets</strong> you want available. Then run the Typpo plugin from <em>Plugins → Development → Typpo Template Export</em>. It reads everything in your selection.</p>
 
         <div class="diagram">
           <div class="video-wrap">
@@ -420,8 +453,8 @@ code {
       <div class="info-item">
         <div class="info-eyebrow" style="color: var(--orange);">The canvas</div>
         <h3 class="info-title">Group your backgrounds in <code>bg</code></h3>
-        <p>Anything that should be treated as a <strong>background</strong> (the images or colors that sit behind your text) must live inside a group named <code>bg</code>. The plugin imports everything in that group as a background layer and cycles through them.</p>
-        <p>If it's not in <code>bg</code>, it won't be treated as a background.</p>
+        <p>Anything that should be treated as a <strong>background</strong> (the images, videos, or colors that sit behind your text) must live inside a group named <code>bg</code>. The plugin imports everything in that group as a background layer and cycles through them.</p>
+        <p>If it's not in <code>bg</code>, you can end up with unwanted results.</p>
         <div class="diagram">
           <div class="shot">
             <img src="images/bg_setup.png" alt="Figma layers panel showing backgrounds grouped inside a bg group">
@@ -455,30 +488,42 @@ code {
       <div class="info-item">
         <div class="info-eyebrow" style="color: var(--green);">The safe zone</div>
         <h3 class="info-title">Set the text bounding box</h3>
-        <p>The <strong>bounding box of your text layer</strong> in Figma is the <strong>safe zone</strong>: the area Typpo is allowed to fill with text. Whatever size you give that box is the space text will fit into.</p>
-        <p>Make the box <strong>large</strong> and text fills it large. Make it <strong>small</strong> and the text is constrained to fit only that area. Your bounding box <em>is</em> your safe zone.</p>
+        <p>The <strong>bounding box of your text layer</strong> in Figma is the <strong>safe zone</strong>: the area Typpo fills with text. It keeps your <strong>font size and styling consistent</strong> and never shrinks the text to cram a long script in. It's also how you keep words clear of <strong>logos, watermarks, and frame edges</strong> they shouldn't touch.</p>
+        <p>So the box controls <em>how much</em> text fits, not how big it looks. If a script runs longer than the safe zone can hold at that size, Typpo keeps what fits and <strong>drops the rest</strong> (only 6 of 12 words might land). Two things to get right: make the safe zone big enough for your <strong>longest</strong> line, and <strong>curate new scripts</strong> knowing they're capped to what fits.</p>
         <div class="diagram">
           <div class="compare">
             <div class="cmp">
               <div class="cmp-frame">
-                <div class="safebox big">
-                  <span class="sz-label">Safe zone</span>
-                  <span class="sz-text lg">Big box, big text</span>
+                <div class="rz-logo"><img src="images/typpo-logo.png" alt="" aria-hidden="true"><span class="rz-tag">Logo</span></div>
+                <div class="rz-wm">© typpo 2026</div>
+                <div class="sz-stack">
+                  <div class="safebox big">
+                    <span class="sz-label">Safe zone</span>
+                    <span class="sz-text">Catch the wave before the sun dips below the horizon and the whole sky turns gold</span>
+                  </div>
                 </div>
               </div>
-              <div class="cmp-cap"><strong>Large box</strong> → text fills the whole area</div>
+              <div class="cmp-cap"><strong>Big safe zone</strong> → the whole script fits</div>
             </div>
             <div class="cmp">
               <div class="cmp-frame">
-                <div class="safebox small">
-                  <span class="sz-label">Safe zone</span>
-                  <span class="sz-text sm">Small box keeps text tucked here</span>
+                <div class="rz-logo"><img src="images/typpo-logo.png" alt="" aria-hidden="true"><span class="rz-tag">Logo</span></div>
+                <div class="rz-wm">© typpo 2026</div>
+                <div class="sz-stack">
+                  <div class="safebox small">
+                    <span class="sz-label">Safe zone</span>
+                    <span class="sz-text">Catch the wave</span>
+                  </div>
+                  <div class="dropped">
+                    <span class="drop-label">Dropped</span>
+                    <span class="dropped-words">before the sun dips below the horizon and the whole sky turns gold</span>
+                  </div>
                 </div>
               </div>
-              <div class="cmp-cap"><strong>Small box</strong> → text is constrained to fit inside</div>
+              <div class="cmp-cap"><strong>Small safe zone</strong> → the overflow is dropped</div>
             </div>
           </div>
-          <div class="caption">The dashed box is the bounding box you draw in Figma. Text never spills outside it.</div>
+          <div class="caption">Same font size in both. The box only changes how many words fit and keeps text clear of restricted areas, so size it for your longest line and curate scripts to match.</div>
         </div>
       </div>
 
