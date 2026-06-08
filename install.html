@@ -656,6 +656,8 @@ footer a:hover { color: var(--salmon); }
             <li>Click <strong>Open</strong> in the dialog that appears</li>
           </ol>
           This tells macOS you trust the file. You only need to do this once.
+          <br><br>
+          <strong>If there's no Open option</strong>, go to <strong>System Settings &rarr; Privacy &amp; Security</strong>, scroll down, and you'll see a message saying the file was blocked. Click <strong>Open Anyway</strong>.
         </div>
       </div>
 
@@ -663,7 +665,9 @@ footer a:hover { color: var(--salmon); }
         <h3><span class="icon" style="background:rgba(255,95,87,0.15);color:#FF5F57;">&#10005;</span> "...is damaged and can't be opened"</h3>
         <div class="trigger">Rare &mdash; usually happens with .app files, not .command scripts</div>
         <div class="fix">
-          Open <strong>Terminal</strong> and run:
+          Go to <strong>System Settings &rarr; Privacy &amp; Security</strong>, scroll down, and you'll see a message saying the file was blocked. Click <strong>Open Anyway</strong>.
+          <br><br>
+          If that doesn't appear, open <strong>Terminal</strong> and run:
           <br><br>
           <code>xattr -cr ~/Downloads/Typpo\ Plugin</code>
           <br><br>
