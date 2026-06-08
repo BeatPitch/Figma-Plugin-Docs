@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Install — Typpo × Figma</title>
+<meta name="description" content="Install the Typpo Figma Plugin in 30 seconds. One command in Terminal — that's it.">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Typpo">
+<meta property="og:title" content="Getting Started — Install Typpo × Figma">
+<meta property="og:description" content="Install the Typpo Figma Plugin in 30 seconds. One command in Terminal — that's it.">
+<meta property="og:url" content="https://beatpitch.github.io/Figma-Plugin-Docs/install.html">
+<meta property="og:image" content="https://beatpitch.github.io/Figma-Plugin-Docs/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Typpo × Figma. Turn your Figma designs into animated video.">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Getting Started — Install Typpo × Figma">
+<meta name="twitter:description" content="Install the Typpo Figma Plugin in 30 seconds. One command in Terminal — that's it.">
+<meta name="twitter:image" content="https://beatpitch.github.io/Figma-Plugin-Docs/images/og-image.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Montserrat:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --salmon: #EE7F7B;
+  --salmon-soft: rgba(238,127,123,0.16);
+  --green: #10B981;
+  --green-soft: rgba(16,185,129,0.14);
+  --fg-on-dark: #FFFFFF;
+  --fg-muted: #A4A496;
+  --fg-dim: #6B6B60;
+  --card-bg: linear-gradient(160deg, #1b1b1f 0%, #141416 100%);
+  --card-border: #2A2A2C;
+  --font-app: "Major Mono Display", ui-monospace, monospace;
+  --font-display: "Montserrat", -apple-system, "SF Pro", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Menlo", "Consolas", monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: #0E0E10;
+  color: var(--fg-on-dark);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(900px 600px at 50% 12%, #2A2A2C 0%, #0E0E10 62%);
+  padding: 56px 24px 80px;
+  overflow-x: hidden;
+}
+
+.page {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ─── Back link ─── */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg-muted);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  margin-bottom: 48px;
+  transition: color 0.2s;
+}
+.back:hover { color: var(--salmon); }
+.back svg { width: 16px; height: 16px; }
+
+/* ─── Header ─── */
+.eyebrow {
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: var(--salmon);
+  text-transform: uppercase;
+}
+
+h1 {
+  font-family: var(--font-app);
+  font-weight: 400;
+  font-size: clamp(32px, 8vw, 56px);
+  line-height: 1;
+  color: #fff;
+  margin-top: 12px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  margin-top: 16px;
+  font-size: 16px;
+  color: var(--fg-muted);
+  line-height: 1.6;
+  max-width: 540px;
+}
+
+/* ─── Method cards ─── */
+.methods { margin-top: 48px; display: flex; flex-direction: column; gap: 24px; }
+
+.method {
+  background: linear-gradient(160deg, #1b1b1f 0%, #141416 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s;
+}
+.method:hover { border-color: rgba(255,255,255,0.08); }
+
+.method.recommended {
+  border-color: rgba(16,185,129,0.3);
+}
+.method.recommended:hover {
+  border-color: rgba(16,185,129,0.5);
+}
+
+.method-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+.method-badge.rec {
+  background: var(--green-soft);
+  color: var(--green);
+}
+.method-badge.alt {
+  background: rgba(255,255,255,0.06);
+  color: var(--fg-muted);
+}
+
+.method h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.method p {
+  font-size: 14px;
+  color: var(--fg-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* ─── Terminal block ─── */
+.terminal {
+  background: #0a0a0c;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.terminal-dot.r { background: #FF5F57; }
+.terminal-dot.y { background: #FEBC2E; }
+.terminal-dot.g { background: #28C840; }
+.terminal-bar span {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-dim);
+  margin-right: 38px;
+}
+
+.terminal-body {
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.terminal-body code {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.8);
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-user-select: all;
+  user-select: all;
+}
+.terminal-body code::-webkit-scrollbar { display: none; }
+
+.terminal-body .prompt {
+  color: var(--green);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.copy-btn {
+  all: unset;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.07);
+  color: var(--fg-muted);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 12px;
+  transition: background 0.15s, color 0.15s;
+}
+.copy-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.copy-btn svg { width: 14px; height: 14px; }
+.copy-btn.copied { color: var(--green); }
+
+
+/* ─── Steps ─── */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 20px;
+}
+
+.step {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  position: relative;
+}
+
+.step + .step { border-top: 1px solid rgba(255,255,255,0.04); }
+
+.step-num {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fg-muted);
+}
+
+.method.recommended .step-num {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.step-text {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.85);
+  padding-top: 3px;
+}
+.step-text strong { color: #fff; font-weight: 600; }
+.step-text a { color: var(--salmon); text-decoration: underline; text-underline-offset: 3px; }
+.step-text a:hover { text-decoration-color: transparent; }
+.step-text a code { color: inherit; }
+.step-text code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: rgba(255,255,255,0.06);
+  padding: 2px 7px;
+  border-radius: 5px;
+  color: var(--salmon);
+}
+
+/* ─── Gatekeeper section ─── */
+.gatekeeper {
+  margin-top: 56px;
+}
+
+.gatekeeper h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.gatekeeper > p {
+  font-size: 14px;
+  color: var(--fg-muted);
+  line-height: 1.6;
+  margin-bottom: 28px;
+  max-width: 560px;
+}
+
+.gk-scenarios {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.gk-card {
+  background: linear-gradient(160deg, #1b1b1f 0%, #141416 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: border-color 0.25s;
+}
+.gk-card:hover { border-color: rgba(255,255,255,0.08); }
+
+.gk-card h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gk-card h3 .icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.gk-card .trigger {
+  font-size: 13px;
+  color: var(--fg-dim);
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.gk-card .fix {
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.65;
+}
+.gk-card .fix strong { color: #fff; }
+.gk-card .fix code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: rgba(255,255,255,0.06);
+  padding: 2px 7px;
+  border-radius: 5px;
+  color: var(--salmon);
+}
+
+.gk-card .fix ol {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+}
+.gk-card .fix ol li {
+  margin-bottom: 4px;
+}
+
+/* ─── Prereq note ─── */
+.prereq {
+  margin-top: 56px;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--salmon-soft);
+  border: 1px solid rgba(238,127,123,0.2);
+}
+.prereq h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--salmon);
+  margin-bottom: 6px;
+}
+.prereq p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.6;
+}
+.prereq a {
+  color: var(--salmon);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prereq a:hover { text-decoration-color: transparent; }
+
+/* ─── Footer ─── */
+footer {
+  margin-top: 72px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px;
+  color: var(--fg-dim);
+  text-align: center;
+  line-height: 1.6;
+}
+footer a { color: var(--fg-muted); text-decoration: none; }
+footer a:hover { color: var(--salmon); }
+
+/* ─── Responsive ─── */
+@media print {
+  @page { margin: 0; }
+  body {
+    background: #0E0E10 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    padding: 48px 40px 56px !important;
+    margin: 0 !important;
+  }
+  .page { max-width: 100%; }
+  .fade-up { opacity: 1 !important; transform: none !important; }
+  .method, .gk-card, .prereq, .terminal { break-inside: avoid; }
+  .back { display: none; }
+  .methods { margin-top: 36px; }
+  .gatekeeper { margin-top: 44px; }
+  .prereq { margin-top: 44px; }
+}
+
+@media (max-width: 560px) {
+  body { padding: 32px 16px 60px; }
+  .method { padding: 24px 20px; }
+  .terminal-body { flex-direction: column; align-items: stretch; gap: 10px; }
+  .terminal-body code { font-size: 11px; }
+  .copy-btn { align-self: flex-end; }
+}
+
+/* ─── Entrance animations ─── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <a href="index.html" class="back fade-up">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+    Back
+  </a>
+
+  <div class="fade-up">
+    <div class="eyebrow">Getting started</div>
+    <h1>Install</h1>
+    <p class="subtitle">One command in Terminal. Takes about 30 seconds. The installer downloads the latest version, copies the plugin files, and opens everything you need.</p>
+  </div>
+
+  <!-- ── Methods ── -->
+  <div class="methods">
+
+    <!-- Method A: Terminal -->
+    <div class="method recommended fade-up">
+      <div class="method-badge rec">Recommended</div>
+      <h2>Terminal command</h2>
+      <p>Open <strong>Terminal</strong> (search "Terminal" in Spotlight), paste the command below, and press Return.</p>
+
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="terminal-dot r"></div>
+          <div class="terminal-dot y"></div>
+          <div class="terminal-dot g"></div>
+          <span>Terminal</span>
+        </div>
+        <div class="terminal-body">
+          <code><span class="prompt">$ </span>bash &lt;(curl -sL https://raw.githubusercontent.com/BeatPitch/Typpo-Figma-Plugin-Releases/main/install.sh)</code>
+          <button class="copy-btn" id="copyCmd" type="button">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M5 11H3.5A1.5 1.5 0 012 9.5v-7A1.5 1.5 0 013.5 1h7A1.5 1.5 0 0112 2.5V5"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Open <strong>Terminal</strong> &mdash; press <code>&#8984; Space</code>, type <strong>Terminal</strong>, hit Return.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>Paste the command</strong> above and press <strong>Return</strong>. It downloads and installs the plugin automatically.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Finder opens with <code>manifest.json</code> highlighted. In <strong>Figma</strong>, go to <strong>Plugins &rarr; Development &rarr; Import plugin from manifest&hellip;</strong> and pick that file. (One-time only.)</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">To <strong>update</strong> later, just run the same command again.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Method B: .command file -->
+    <div class="method fade-up">
+      <div class="method-badge alt">Alternative</div>
+      <h2>Download &amp; double-click</h2>
+      <p>If you'd rather not use Terminal, download the installer ZIP from the releases page.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>Download</strong> the latest <a href="https://github.com/BeatPitch/Typpo-Figma-Plugin-Releases/releases/latest" target="_blank" rel="noopener"><code>Typpo-Plugin-Installer.zip</code></a> from the releases page and unzip it.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>Right-click</strong> the file <code>Install Typpo Plugin.command</code> and choose <strong>Open</strong>.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">macOS may show a security warning &mdash; click <strong>Open</strong> in the dialog. (See troubleshooting below if it blocks you.)</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">The rest is the same &mdash; Finder opens, import <code>manifest.json</code> into Figma once, done.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Gatekeeper ── -->
+  <div class="gatekeeper fade-up">
+    <h2>macOS security prompts</h2>
+    <p>macOS protects you from unverified software. Here's what you might see and how to get past it.</p>
+
+    <div class="gk-scenarios">
+
+      <div class="gk-card fade-up">
+        <h3><span class="icon" style="background:rgba(254,188,46,0.15);color:#FEBC2E;">&#9888;</span> "Apple could not verify&hellip;"</h3>
+        <div class="trigger">Shows when you double-click the .command file</div>
+        <div class="fix">
+          <strong>Don't double-click.</strong> Instead:
+          <ol>
+            <li><strong>Right-click</strong> (or Control-click) the file</li>
+            <li>Choose <strong>Open</strong> from the menu</li>
+            <li>Click <strong>Open</strong> in the dialog that appears</li>
+          </ol>
+          This tells macOS you trust the file. You only need to do this once.
+        </div>
+      </div>
+
+      <div class="gk-card fade-up">
+        <h3><span class="icon" style="background:rgba(255,95,87,0.15);color:#FF5F57;">&#10005;</span> "...is damaged and can't be opened"</h3>
+        <div class="trigger">Rare &mdash; usually happens with .app files, not .command scripts</div>
+        <div class="fix">
+          Open <strong>Terminal</strong> and run:
+          <br><br>
+          <code>xattr -cr ~/Downloads/Typpo\ Plugin</code>
+          <br><br>
+          This strips the quarantine flag macOS put on the downloaded file. Then try opening it again.
+          <br><br>
+          Or skip the file entirely and use the <strong>Terminal command</strong> method above &mdash; it bypasses Gatekeeper completely.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Prereq ── -->
+  <div class="prereq fade-up">
+    <h3>Before you start</h3>
+    <p>You need <strong>Figma Desktop</strong> installed. The browser version can't run development plugins.<br>
+    <a href="https://www.figma.com/downloads/" target="_blank" rel="noopener">Download Figma &rarr;</a></p>
+  </div>
+
+  <footer class="fade-up">
+    Need help? Reach out to <a href="mailto:adrian@beatpitch.app">adrian@beatpitch.app</a> or <a href="mailto:marian@beatpitch.app">marian@beatpitch.app</a>
+  </footer>
+
+</div>
+
+<script>
+// Fade-up on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+const CMD = 'bash <(curl -sL https://raw.githubusercontent.com/BeatPitch/Typpo-Figma-Plugin-Releases/main/install.sh)';
+
+document.getElementById('copyCmd').addEventListener('click', function () {
+  const btn = this;
+  navigator.clipboard.writeText(CMD).then(() => {
+    btn.classList.add('copied');
+    btn.querySelector('svg').style.display = 'none';
+    btn.childNodes[btn.childNodes.length - 1].textContent = ' Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.querySelector('svg').style.display = '';
+      btn.childNodes[btn.childNodes.length - 1].textContent = '\n            Copy\n          ';
+    }, 2200);
+  });
+});
+</script>
+
+</body>
+</html>
