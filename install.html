@@ -661,21 +661,7 @@ footer a:hover { color: var(--salmon); }
         </div>
       </div>
 
-      <div class="gk-card fade-up">
-        <h3><span class="icon" style="background:rgba(255,95,87,0.15);color:#FF5F57;">&#10005;</span> "...is damaged and can't be opened"</h3>
-        <div class="trigger">Rare &mdash; usually happens with .app files, not .command scripts</div>
-        <div class="fix">
-          Go to <strong>System Settings &rarr; Privacy &amp; Security</strong>, scroll down, and you'll see a message saying the file was blocked. Click <strong>Open Anyway</strong>.
-          <br><br>
-          If that doesn't appear, open <strong>Terminal</strong> and run:
-          <br><br>
-          <code>xattr -cr ~/Downloads/Typpo\ Plugin</code>
-          <br><br>
-          This strips the quarantine flag macOS put on the downloaded file. Then try opening it again.
-          <br><br>
-          Or skip the file entirely and use the <strong>Terminal command</strong> method above &mdash; it bypasses Gatekeeper completely.
-        </div>
-      </div>
+
 
     </div>
   </div>
