@@ -411,6 +411,92 @@ h1 {
 }
 .prereq a:hover { text-decoration-color: transparent; }
 
+/* ─── Next-up cards ─── */
+.next-up { margin-top: 56px; }
+.next-up h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 18px;
+}
+.next-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.next-card {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(160deg, #1b1b1f 0%, #141416 100%);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+.next-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(238,127,123,0.4);
+  box-shadow: 0 16px 36px -18px rgba(0,0,0,0.6);
+}
+.next-card-media {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  background: #0d0d10;
+}
+.next-card-media img,
+.next-card-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.82) saturate(0.88);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
+}
+.next-card:hover .next-card-media img,
+.next-card:hover .next-card-media video {
+  transform: scale(1.05);
+  filter: brightness(1.04) saturate(1.08);
+}
+.next-card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(20,20,22,0.6));
+  pointer-events: none;
+}
+.next-card-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
+.next-card-kicker {
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--salmon);
+  margin-bottom: 6px;
+}
+.next-card-title { font-size: 16px; font-weight: 700; line-height: 1.3; }
+.next-card-desc { font-size: 13px; color: var(--fg-muted); line-height: 1.5; margin-top: 6px; }
+.next-card-go {
+  margin-top: auto;
+  padding-top: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--salmon);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.next-card-go .arr { transition: transform 0.25s; }
+.next-card:hover .next-card-go .arr { transform: translateX(4px); }
+
+@media (max-width: 560px) {
+  .next-cards { grid-template-columns: 1fr; }
+}
+
 /* ─── Footer ─── */
 footer {
   margin-top: 72px;
@@ -594,6 +680,34 @@ footer a:hover { color: var(--salmon); }
     <h3>Before you start</h3>
     <p>You need <strong>Figma Desktop</strong> installed. The browser version can't run development plugins.<br>
     <a href="https://www.figma.com/downloads/" target="_blank" rel="noopener">Download Figma &rarr;</a></p>
+  </div>
+
+  <div class="next-up fade-up">
+    <h2>Next up</h2>
+    <div class="next-cards">
+      <a class="next-card" href="what-is-a-template.html">
+        <div class="next-card-media">
+          <img src="images/figma-board-banner.png" alt="Template layouts on a Figma board" loading="lazy">
+        </div>
+        <div class="next-card-body">
+          <div class="next-card-kicker">Start here</div>
+          <div class="next-card-title">What's a template?</div>
+          <p class="next-card-desc">The reusable bundle behind every clip. See what goes inside one, and how to bend it to your brand.</p>
+          <div class="next-card-go">GO <span class="arr">&rarr;</span></div>
+        </div>
+      </a>
+      <a class="next-card" href="using-the-plugin.html">
+        <div class="next-card-media">
+          <video src="videos/select_frames_run_plugin.mp4" autoplay loop muted playsinline></video>
+        </div>
+        <div class="next-card-body">
+          <div class="next-card-kicker">The workflow</div>
+          <div class="next-card-title">How to use the plugin</div>
+          <p class="next-card-desc">Your selection goes in, a finished captioned video comes out. The whole flow, step by step.</p>
+          <div class="next-card-go">GO <span class="arr">&rarr;</span></div>
+        </div>
+      </a>
+    </div>
   </div>
 
   <footer class="fade-up">
